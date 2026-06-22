@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Item 102 - Diplopie</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%237A766E%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%0A%3Cline%20x1%3D%2212%22%20y1%3D%223%22%20x2%3D%2212%22%20y2%3D%2221%22/%3E%0A%3Cpath%20d%3D%22M6%206c0%203%2012%203%2012%206s-12%203-12%206%22/%3E%0A%3Cpath%20d%3D%22M18%206c0%203%20-12%203%20-12%206s12%203%2012%206%22/%3E%0A%3Ccircle%20cx%3D%2212%22%20cy%3D%223%22%20r%3D%221.4%22%20fill%3D%22%237A766E%22%20stroke%3D%22none%22/%3E%0A%3C/svg%3E">
+<style>
+  :root{
+    --bg:#FAFAF7; --card:#FFFFFF; --ink:#1C1B19; --ink-soft:#52504B; --ink-faint:#8A877F;
+    --line:#EAE7DF; --line-strong:#DDD9CF;
+    --c1:#5B5BD6; --c1-bg:#EEEEFB; --c2:#C77A12; --c2-bg:#FBF1DF;
+    --c3:#0E8C8C; --c3-bg:#E1F3F2; --c4:#9333A8; --c4-bg:#F4E9F7;
+    --c5:#A8543D; --c5-bg:#F7E9E4;
+    --c6:#3D7A4A; --c6-bg:#E8F1E9;
+    --c7:#7A4F8C; --c7-bg:#F0E8F3;
+    --warn:#C0392B; --warn-bg:#FBE9E7; --warn-line:#F1B9B0;
+    --mnemo:#B7820B; --mnemo-bg:#FFF8E1; --mnemo-line:#F0DFA0;
+    --gray:#7A766E; --gray-bg:#EFEDE6; --btn-bg:#5F5C55; --btn-fg:#FFFFFF;
+    --co-red:#C0392B; --co-red-bg:#FBE9E7; --co-yellow:#B7820B; --co-yellow-bg:#FFF8E1;
+    --co-blue:#1F5FA8; --co-blue-bg:#E3EEFB; --co-pink:#B23472; --co-pink-bg:#FBE6F0;
+    --co-violet:#9333A8; --co-violet-bg:#F4E9F7; --co-teal:#0E8C8C; --co-teal-bg:#E1F3F2;
+    --co-gray:#7A766E; --co-gray-bg:#EFEDE6;
+    --accent:var(--c1); --accent-bg:var(--c1-bg);
+    --radius:16px; --shadow:0 1px 2px rgba(30,28,24,.04), 0 8px 24px rgba(30,28,24,.05);
+  }
+  [data-theme="dark"]{
+    --bg:#15140F; --card:#201F1A; --ink:#ECEAE3; --ink-soft:#B7B4AB; --ink-faint:#827F77;
+    --line:#322F28; --line-strong:#403D34;
+    --c1:#9D9DF2; --c1-bg:#26264A; --c2:#E2A748; --c2-bg:#3A2E16;
+    --c3:#4FC4C0; --c3-bg:#11332F; --c4:#CB7FDD; --c4-bg:#341A3C;
+    --c5:#E08F76; --c5-bg:#3A2620;
+    --c6:#7BC18C; --c6-bg:#1B3320;
+    --c7:#C99BDD; --c7-bg:#2E1F35;
+    --warn:#F08C7E; --warn-bg:#3A1E18; --warn-line:#5C2C22;
+    --mnemo:#E2C158; --mnemo-bg:#332B12; --mnemo-line:#544818;
+    --gray:#9A968D; --gray-bg:#2B2A24; --btn-bg:#54514A; --btn-fg:#F2F0EA;
+    --co-red:#F08C7E; --co-red-bg:#3A1E18; --co-yellow:#E2C158; --co-yellow-bg:#332B12;
+    --co-blue:#8FB6E6; --co-blue-bg:#1C3148; --co-pink:#EAA3C6; --co-pink-bg:#3D1F2E;
+    --co-violet:#CB7FDD; --co-violet-bg:#341A3C; --co-teal:#4FC4C0; --co-teal-bg:#11332F;
+    --co-gray:#9A968D; --co-gray-bg:#2B2A24;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:118px;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;font-size:15px;transition:background .25s,color .25s;}
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);
+    backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line);}
+  .progress{height:2.5px;background:transparent;overflow:hidden;}
+  .progress-fill{height:100%;width:0%;background:var(--ink-faint);opacity:.55;transition:width .12s linear;}
+  .topbar-inner{max-width:1060px;margin:0 auto;padding:9px 22px;display:flex;flex-direction:column;gap:8px;}
+  .row1{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .brand{font-weight:700;letter-spacing:-.02em;font-size:15px;white-space:nowrap;color:var(--ink);text-decoration:none;transition:.15s;}
+  .brand:hover{color:var(--c1);}
+  .brand span{color:var(--ink-faint);font-weight:500;}
+  .nav{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+  .nav a{text-decoration:none;font-size:13px;font-weight:600;color:var(--ink-soft);padding:5px 11px;
+    border-radius:999px;border:1px solid transparent;transition:.15s;display:flex;align-items:center;gap:6px;}
+  .nav a .dot{width:8px;height:8px;border-radius:50%;}
+  .nav a:hover{background:var(--card);border-color:var(--line);}
+  .d1{background:var(--c1);} .d2{background:var(--c2);} .d3{background:var(--c3);} .d4{background:var(--c4);} .d5{background:var(--c5);} .d6{background:var(--c6);} .d7{background:var(--c7);}
+  #tocBtn{margin-left:auto;}
+
+  .row2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .row2b{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .row3{border-top:1px solid var(--line);padding-top:7px;margin-top:1px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .tool{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-soft);
+    cursor:pointer;user-select:none;white-space:nowrap;background:var(--card);border:1px solid var(--line);
+    padding:5px 10px;border-radius:9px;transition:.15s;}
+  .tool:hover{border-color:var(--line-strong);}
+  .tool.active{color:#fff;background:var(--c1);border-color:var(--c1);}
+  .switch{width:34px;height:20px;border-radius:999px;background:var(--line-strong);position:relative;transition:.2s;flex:none;}
+  .switch::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:.2s;}
+  body.revision .rev .switch{background:var(--c1);} body.revision .rev .switch::after{transform:translateX(14px);}
+  body.editmode .edit .switch{background:var(--c1);} body.editmode .edit .switch::after{transform:translateX(14px);}
+
+  .search{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);
+    border-radius:9px;padding:3px 8px;}
+  .search input{border:none;background:transparent;color:var(--ink);font-size:13px;outline:none;width:130px;font-family:inherit;}
+  .search .cnt{font-size:11px;color:var(--ink-faint);min-width:38px;text-align:right;}
+  .search button{border:none;background:transparent;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:5px;}
+  .search button:hover{background:var(--accent-bg);}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:1060px;margin:0 auto;padding:0 22px 90px;}
+  .hero{padding:40px 0 22px;}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);}
+  .hero h1{font-size:32px;line-height:1.1;letter-spacing:-.03em;margin:.32em 0 .25em;font-weight:800;}
+  .hero p{color:var(--ink-soft);max-width:650px;margin:0;font-size:15px;}
+  .hint{margin-top:14px;font-size:12.5px;color:var(--ink-faint);display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .hint b{color:var(--c1);font-weight:700;}
+  .notes-box{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px 7px;box-shadow:var(--shadow);}
+  .notes-area{width:100%;border:none;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;line-height:1.55;resize:vertical;min-height:56px;outline:none;padding:8px 10px;}
+  .notes-area::placeholder{color:var(--ink-faint);}
+
+  section{scroll-margin-top:118px;padding-top:32px;}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:6px;}
+  .sec-num{width:38px;height:38px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:16px;color:#fff;background:var(--accent);box-shadow:var(--shadow);}
+  .sec-head h2{font-size:24px;letter-spacing:-.02em;margin:0;font-weight:800;}
+  .sec-sub{color:var(--ink-faint);font-size:13px;margin:0 0 18px 51px;font-weight:500;}
+  #s1{--accent:var(--c1);--accent-bg:var(--c1-bg);}
+  #s2{--accent:var(--c2);--accent-bg:var(--c2-bg);}
+  #s3{--accent:var(--c3);--accent-bg:var(--c3-bg);}
+  #s4{--accent:var(--c4);--accent-bg:var(--c4-bg);}
+  #s5{--accent:var(--c5);--accent-bg:var(--c5-bg);}
+  #s6{--accent:var(--c6);--accent-bg:var(--c6-bg);}
+  #s7{--accent:var(--c7);--accent-bg:var(--c7-bg);}
+
+  .grid{display:grid;gap:16px;} .g2{grid-template-columns:repeat(2,1fr);} .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:780px){.g2,.g3{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);position:relative;}
+  .card-ctrl{position:absolute;top:8px;right:8px;display:none;gap:4px;z-index:4;}
+  body.editmode .card-ctrl{display:flex;}
+  .card-ctrl button{border:1px solid var(--line);background:var(--bg);color:var(--ink-soft);width:24px;height:24px;border-radius:7px;cursor:pointer;font-size:12px;line-height:1;padding:0;}
+  .card-ctrl button:hover{border-color:var(--line-strong);}
+  .card.c-editing{outline:2px solid var(--accent);outline-offset:2px;}
+  .card .c-leaf[contenteditable="true"]{outline:none;border-radius:3px;}
+  .card.c-editing .c-leaf[contenteditable="true"]:hover{background:color-mix(in srgb,var(--accent) 8%,transparent);}
+  .card.c-editing .c-leaf[contenteditable="true"]:focus{background:color-mix(in srgb,var(--accent) 12%,transparent);}
+  .card.span{grid-column:1/-1;}
+  .card h3{font-size:13.5px;margin:0 0 12px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;color:var(--ink);}
+  .card h3::before{content:"";width:6px;height:16px;border-radius:3px;background:var(--accent);flex:none;}
+  .card h4{font-size:12.5px;font-weight:700;color:var(--accent);margin:14px 0 7px;text-transform:uppercase;letter-spacing:.04em;}
+  .card h4:first-child{margin-top:0;}
+  ul{margin:0;padding-left:18px;} li{margin:4px 0;color:var(--ink-soft);}
+  li b,p b{color:var(--ink);font-weight:600;} p{margin:6px 0;color:var(--ink-soft);}
+
+  /* ---------- KEY PILLS (active recall) ---------- */
+  .cle{display:inline-flex;align-items:center;font-weight:700;color:var(--accent);background:var(--accent-bg);
+    border-radius:7px;padding:1px 7px;font-size:.93em;white-space:nowrap;cursor:default;transition:.15s;}
+  .cle-user{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--accent) 45%,transparent);}
+  body.revision .cle{color:transparent;background:var(--line-strong);border-radius:7px;cursor:pointer;position:relative;min-width:34px;justify-content:center;}
+  body.revision .cle::after{content:"?";color:var(--ink-faint);font-weight:800;position:absolute;}
+  body.revision .cle.show{color:var(--accent);background:var(--accent-bg);}
+  body.revision .cle.show::after{content:"";}
+  body.editmode .cle-user{cursor:pointer;outline:2px dashed var(--accent);outline-offset:1px;color:var(--accent)!important;background:var(--accent-bg)!important;}
+  body.editmode .cle-user::after{content:""!important;}
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{position:relative;border-radius:12px;padding:13px 15px;margin:14px 0 2px;font-size:13.5px;background:var(--accent-bg);
+    border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);}
+  .callout .tag{font-weight:800;color:var(--accent);font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .callout p{color:var(--ink);margin:3px 0;}
+  .callout.warn{--accent:var(--co-red);--accent-bg:var(--co-red-bg);}
+  .callout.mnemo{--accent:var(--co-yellow);--accent-bg:var(--co-yellow-bg);}
+  .callout[data-color="red"]{--accent:var(--co-red);--accent-bg:var(--co-red-bg);}
+  .callout[data-color="yellow"]{--accent:var(--co-yellow);--accent-bg:var(--co-yellow-bg);}
+  .callout[data-color="blue"]{--accent:var(--co-blue);--accent-bg:var(--co-blue-bg);}
+  .callout[data-color="pink"]{--accent:var(--co-pink);--accent-bg:var(--co-pink-bg);}
+  .callout[data-color="violet"]{--accent:var(--co-violet);--accent-bg:var(--co-violet-bg);}
+  .callout[data-color="teal"]{--accent:var(--co-teal);--accent-bg:var(--co-teal-bg);}
+  .callout[data-color="gray"]{--accent:var(--co-gray);--accent-bg:var(--co-gray-bg);}
+
+  .co-ctrl{position:absolute;top:7px;right:8px;display:none;gap:4px;}
+  body.editmode .co-ctrl{display:flex;}
+  .co-ctrl button{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);width:24px;height:24px;border-radius:7px;cursor:pointer;font-size:12px;line-height:1;padding:0;}
+  .co-ctrl button:hover{border-color:var(--line-strong);}
+  .callout.editing{outline:2px solid var(--accent);outline-offset:1px;}
+  .callout [contenteditable="true"]{outline:none;}
+  .callout.editing .cle{color:var(--accent)!important;background:var(--accent-bg)!important;}
+  .callout.editing .cle::after{content:""!important;}
+  .addco{display:none;gap:8px;margin-top:16px;flex-wrap:wrap;}
+  body.editmode .addco{display:flex;}
+  .addco button{border:1px dashed var(--line-strong);background:transparent;color:var(--ink-soft);font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:9px;cursor:pointer;}
+  .addco button:hover{border-color:var(--accent);color:var(--accent);}
+  .co-colbtn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--line);background:var(--card);border-radius:7px;cursor:pointer;font-size:11px;position:relative;overflow:hidden;}
+  .co-palette{position:absolute;top:34px;right:8px;display:none;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px;box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:6;flex-wrap:wrap;width:118px;}
+  .co-palette.open{display:flex;}
+  .cpsw{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);cursor:pointer;font-size:12px;color:var(--ink-faint);padding:0;}
+  body.editmode .callout[draggable="true"]{cursor:grab;}
+  .callout.dragging{opacity:.5;}
+  .card.drop-hover{outline:2px dashed var(--accent);outline-offset:3px;}
+  .fmtbar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(24px);z-index:80;display:none;align-items:center;gap:5px;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;padding:7px 10px;box-shadow:0 8px 30px rgba(0,0,0,.18);opacity:0;transition:.2s;flex-wrap:wrap;max-width:94vw;justify-content:center;}
+  .fmtbar.on{display:flex;opacity:1;transform:translateX(-50%) translateY(0);}
+  .fmtbar button{border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:14px;padding:0 7px;}
+  .fmtbar button:hover{border-color:var(--line-strong);}
+  .fmtbar .sw{width:24px;min-width:24px;height:24px;border-radius:6px;border:1px solid rgba(0,0,0,.15);padding:0;}
+  .fmtbar .fmt-sep{width:1px;height:22px;background:var(--line);margin:0 3px;}
+  .fmtbar .fmt-lbl{font-size:11px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;}
+
+  /* ---------- TABLES ---------- */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+  .tbl th{text-align:left;font-weight:700;color:#fff;background:var(--accent);padding:8px 11px;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;}
+  .tbl th:first-child{border-radius:9px 0 0 0;} .tbl th:last-child{border-radius:0 9px 0 0;}
+  .tbl td{padding:8px 11px;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl td b{color:var(--ink);} .tbl tbody tr:hover{background:var(--accent-bg);}
+
+  .steps{counter-reset:st;display:grid;gap:10px;} .step{display:flex;gap:12px;align-items:flex-start;}
+  .step .n{counter-increment:st;flex:none;width:26px;height:26px;border-radius:8px;background:var(--accent);color:#fff;
+    font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .step .n::before{content:counter(st);} .step .b{font-size:13.5px;} .step .b b{color:var(--ink);}
+  .chip{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:.02em;}
+  .chip.h{background:#E3EEFB;color:#1F5FA8;} .chip.f{background:#FBE6F0;color:#B23472;}
+  [data-theme="dark"] .chip.h{background:#1c3148;color:#9cc4ee;} [data-theme="dark"] .chip.f{background:#3d1f2e;color:#eaa3c6;}
+
+  mark.srch{background:#FFE066;color:#1C1B19;border-radius:3px;padding:0 1px;}
+  mark.srch.cur{background:#FF9F1C;}
+
+  li.starred::before{content:"⭐ ";}
+  tbody tr.starred td:first-child::before{content:"⭐ ";}
+  body.starmode li,body.starmode tbody tr{cursor:pointer;}
+  body.starmode li:hover{background:var(--c2-bg);border-radius:6px;}
+  body.starmode .star .switch{background:var(--c2);} body.starmode .star .switch::after{transform:translateX(14px);}
+
+  body.filterstar #fiche li:not(.starred):not(:has(.starred)),
+  body.filterstar #fiche tbody tr:not(.starred),
+  body.filterstar #fiche ul:not(:has(.starred)),
+  body.filterstar #fiche table:not(:has(.starred)),
+  body.filterstar #fiche .callout,
+  body.filterstar #fiche .card>p,
+  body.filterstar #fiche .card .grid>div:not(:has(.starred)),
+  body.filterstar #fiche .card:not(:has(.starred)),
+  body.filterstar #fiche section:not(:has(.starred)),
+  body.filterstar .module{display:none!important;}
+  body.filterstar .filter .switch{background:var(--c2);} body.filterstar .filter .switch::after{transform:translateX(14px);}
+
+  /* ---------- BOTTOM MODULES ---------- */
+  .module{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 24px;box-shadow:var(--shadow);}
+  .module-head{display:flex;align-items:center;gap:11px;margin-bottom:4px;}
+  .module-head .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;background:var(--c1-bg);}
+  .module-head h2{font-size:20px;margin:0;letter-spacing:-.02em;font-weight:800;}
+  .module-head .sub{color:var(--ink-faint);font-size:12.5px;margin:0;}
+  .module#m-cards .ic{background:var(--gray-bg);} .module#m-carnet .ic{background:var(--gray-bg);}
+
+  /* flashcards */
+  .fc-stage{margin:18px 0 12px;min-height:160px;display:flex;align-items:center;justify-content:center;}
+  .flashcard{width:100%;max-width:540px;min-height:150px;cursor:pointer;perspective:1200px;}
+  .fc-inner{position:relative;width:100%;min-height:150px;transition:transform .5s;transform-style:preserve-3d;}
+  .flashcard.flip .fc-inner{transform:rotateY(180deg);}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:22px;display:flex;
+    flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1.5px solid var(--line);}
+  .fc-front{background:var(--gray-bg);} .fc-back{background:color-mix(in srgb,var(--gray) 16%,var(--card));transform:rotateY(180deg);}
+  .fc-face .lbl{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px;}
+  .fc-face .txt{font-size:16px;font-weight:600;color:var(--ink);line-height:1.45;}
+  .fc-ctrl{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;}
+  .fc-ctrl button{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);font-weight:600;font-size:13px;
+    padding:7px 14px;border-radius:9px;cursor:pointer;transition:.15s;}
+  .fc-ctrl button:hover{border-color:var(--line-strong);background:var(--bg);}
+  .fc-pos{font-size:12.5px;color:var(--ink-faint);min-width:54px;text-align:center;}
+  .fc-empty{color:var(--ink-faint);font-size:13.5px;text-align:center;}
+
+  /* generic add-forms */
+  .addform{margin-top:16px;border-top:1px solid var(--line);padding-top:16px;display:grid;gap:9px;}
+  .addform.two{grid-template-columns:1fr 1fr;} @media(max-width:600px){.addform.two{grid-template-columns:1fr;}}
+  input.f,textarea.f{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;
+    padding:9px 11px;font-family:inherit;font-size:14px;outline:none;resize:vertical;transition:.15s;}
+  input.f:focus,textarea.f:focus{border-color:var(--accent);}
+  textarea.f{min-height:64px;}
+  .btn{border:none;border-radius:10px;padding:9px 16px;font-weight:700;font-size:13.5px;cursor:pointer;background:var(--btn-bg);color:var(--btn-fg);transition:.15s;}
+  .btn:hover{filter:brightness(1.06);} .btn.ghost{background:var(--card);color:var(--ink-soft);border:1px solid var(--line);}
+  .btn.sm{padding:6px 11px;font-size:12.5px;}
+  .formrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .span-full{grid-column:1/-1;}
+
+  /* carnet entries */
+  .entry{border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin-top:13px;background:var(--bg);}
+  .entry .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+  .entry .date{font-size:11.5px;color:var(--ink-faint);font-weight:600;}
+  .entry .body{font-size:14px;color:var(--ink);white-space:pre-wrap;line-height:1.5;}
+  .entry .imgs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .entry .imgs img{max-width:160px;max-height:160px;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;}
+  .del{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:12px;font-weight:600;padding:3px 7px;border-radius:6px;}
+  .del:hover{background:var(--warn-bg);color:var(--warn);}
+  .thumbs{display:flex;flex-wrap:wrap;gap:8px;}
+  .thumbs .t{position:relative;}
+  .thumbs img{max-width:84px;max-height:84px;border-radius:7px;border:1px solid var(--line);}
+  .thumbs .x{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--warn);color:#fff;border:none;font-size:11px;cursor:pointer;line-height:1;}
+  .paste-hint{font-size:11.5px;color:var(--ink-faint);}
+
+  /* TOC panel */
+  .toc{position:fixed;top:0;right:0;height:100%;width:300px;max-width:84vw;background:var(--card);border-left:1px solid var(--line);
+    box-shadow:-12px 0 40px rgba(0,0,0,.12);z-index:60;transform:translateX(100%);transition:transform .28s;padding:18px 18px 30px;overflow-y:auto;}
+  .toc.open{transform:translateX(0);}
+  .toc h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin:0 0 10px;}
+  .toc a{display:block;text-decoration:none;color:var(--ink-soft);font-size:13.5px;padding:5px 9px;border-radius:8px;}
+  .toc a:hover{background:var(--accent-bg);color:var(--ink);}
+  .toc a.sub{font-size:12.5px;padding-left:20px;color:var(--ink-faint);}
+  .toc a.head{font-weight:700;color:var(--ink);margin-top:10px;}
+  .toc .close{float:right;border:none;background:transparent;font-size:20px;color:var(--ink-faint);cursor:pointer;}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:55;opacity:0;pointer-events:none;transition:.25s;}
+  .scrim.on{opacity:1;pointer-events:auto;}
+
+  /* floating selection button */
+  #maskbtn{position:absolute;z-index:70;background:var(--c1);color:#fff;border:none;border-radius:9px;padding:7px 12px;
+    font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);display:none;}
+  #maskbtn::before{content:"✂️ ";}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);
+    padding:11px 18px;border-radius:11px;font-size:13.5px;font-weight:600;z-index:90;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out;}
+  .lightbox.on{display:flex;} .lightbox img{max-width:100%;max-height:100%;border-radius:8px;}
+
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:12.5px;text-align:center;}
+  .backtop{position:fixed;right:20px;bottom:20px;z-index:40;width:42px;height:42px;border-radius:50%;background:var(--ink);
+    color:var(--bg);border:none;cursor:pointer;font-size:18px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;}
+  .backtop.on{opacity:1;pointer-events:auto;}
+  .editbar{display:none;}
+  body.editmode .editbar{display:flex;}
+
+  @media print{
+    .topbar,.backtop,.hint,.toc,.scrim,#maskbtn,.toast,.addform,.fc-ctrl,.editbar,.lightbox,.co-ctrl,.addco,.fmtbar,.card-ctrl,.progress{display:none!important;}
+    body{background:#fff;font-size:11px;} .card,.module{box-shadow:none;break-inside:avoid;} section{break-inside:avoid-page;}
+    body.revision .cle{color:var(--accent)!important;background:var(--accent-bg)!important;}
+    body.revision .cle::after{content:""!important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="row2">
+      <div class="tool rev" id="revBtn" role="button" tabindex="0">Révision <div class="switch"></div></div>
+      <div class="tool edit" id="editBtn" role="button" tabindex="0">Éditeur <div class="switch"></div></div>
+      <div class="tool star" id="starBtn" role="button" tabindex="0">⭐ Annales <div class="switch"></div></div>
+      <div class="tool filter" id="filterBtn" role="button" tabindex="0">Filtrer ⭐ <div class="switch"></div></div>
+      <div class="search">🔍 <input id="searchInput" placeholder="Rechercher…" autocomplete="off"><span class="cnt" id="searchCnt"></span>
+        <button id="searchPrev" title="Précédent">▲</button><button id="searchNext" title="Suivant">▼</button></div>
+      <div class="tool" id="themeBtn" role="button" tabindex="0" title="Mode sombre">🌙</div>
+    </div>
+    <div class="row2b">
+      <div class="tool" id="exportBtn" role="button" tabindex="0">Exporter</div>
+      <div class="tool" id="importBtn" role="button" tabindex="0">Importer</div>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+    <div class="row3">
+      <a href="index.html" class="brand" title="Retour à l'index des fiches">← Item 102</a>
+      <nav class="nav">
+        <a href="#s1"><span class="dot d1"></span>Anatomie & tests cliniques</a>
+        <a href="#s2"><span class="dot d2"></span>Mono vs binoculaire</a>
+        <a href="#s3"><span class="dot d3"></span>Tropies, ductions & vergences</a>
+        <a href="#s4"><span class="dot d4"></span>Paralysies III, IV, VI</a>
+        <a href="#s5"><span class="dot d5"></span>Myasthénie & valeur du VI</a>
+        <a href="#s6"><span class="dot d6"></span>Urgences & imagerie</a>
+        <a href="#m-cards"><span class="dot" style="background:var(--gray)"></span>Flashcards</a>
+        <a href="#m-carnet"><span class="dot" style="background:var(--gray)"></span>Carnet d'erreur</a>
+      </nav>
+      <div class="tool" id="tocBtn" role="button" tabindex="0">☰ Plan</div>
+    </div>
+  </div>
+  <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">Item 102 · Neurologie · Ophtalmologie</div>
+    <h1>Diplopie</h1>
+    <div class="notes-box"><textarea id="notesArea" class="notes-area" placeholder=""></textarea></div>
+  </div>
+
+  <div id="fiche">
+
+  <!-- ============== 1. ANATOMIE & TESTS CLINIQUES ============== -->
+  <section id="s1">
+    <div class="sec-head"><div class="sec-num">1</div><h2>Anatomie des nerfs oculomoteurs & tests cliniques</h2></div>
+    <p class="sec-sub">Systématisation III/IV/VI, faisceau longitudinal médial, les 6 tests d'exploration de l'oculomotricité</p>
+    <div class="grid g2">
+      <div class="card span">
+        <h3>Systématisation des nerfs III, IV, VI</h3>
+        <table class="tbl"><thead><tr><th>Nerf</th><th>Noyau</th><th>Trajet clé</th><th>Innervation</th></tr></thead><tbody>
+          <tr><td><b>III</b> (oculomoteur)</td><td>Mésencéphale, colliculus <b>supérieur</b></td><td>Fosse interpédonculaire, entre cérébrale postérieure et cérébelleuse supérieure, près de la <b>communicante postérieure</b> ; toit/paroi latérale du sinus caverneux</td><td>Droit médial, supérieur, inférieur, oblique inférieur, releveur paupière, <b>sphincter irien</b></td></tr>
+          <tr><td><b>IV</b> (trochléaire)</td><td>Mésencéphale, colliculus <b>inférieur</b></td><td><b>Seul nerf crânien à émerger en dorsal</b> ; croise la ligne médiane ; paroi latérale sinus caverneux (avec III et V1)</td><td><b>Oblique supérieur</b> seul</td></tr>
+          <tr><td><b>VI</b> (abducens)</td><td>Pont, plancher du <b>4ᵉ ventricule</b></td><td>Sulcus ponto-médullaire ; le long du clivus ; perfore la dure-mère (point fixe) ; <b>à l'intérieur</b> du sinus caverneux (≠ III/IV), contact carotide interne</td><td><b>Droit latéral</b> seul</td></tr>
+        </tbody></table>
+        <div class="callout warn"><span class="tag">Piège</span><p>Le point de fixation du VI à la dure-mère le rend vulnérable à l'<b>étirement</b> lors d'un déplacement cérébral (HTIC) → explique sa <b>faible valeur localisatrice</b> (cf. section 5).</p></div>
+      </div>
+      <div class="card">
+        <h3>Faisceau longitudinal médial (FLM)</h3>
+        <p>Fibres paramédianes, plancher du 4ᵉ ventricule. Relie le noyau du <b>VI</b> d'un côté au noyau du <b>III controlatéral</b> → coordonne abduction d'un œil + adduction de l'autre lors du regard latéral.</p>
+        <div class="callout"><span class="tag">À retenir</span><p>Lésion du FLM (SEP, lacune) → <b>ophtalmoplégie internucléaire</b> : défaut d'adduction de l'œil du côté lésé + nystagmus de l'œil opposé en abduction.</p></div>
+      </div>
+      <div class="card span">
+        <h3>Les 6 tests cliniques d'exploration de l'oculomotricité</h3>
+        <table class="tbl"><thead><tr><th>Test</th><th>Principe</th></tr></thead><tbody>
+          <tr><td><b>1. Inspection</b></td><td>Attitude vicieuse de la tête, reflets cornéens (décentrés si œil dévié), ptosis, exophtalmie, anisocorie</td></tr>
+          <tr><td><b>2. Motilité oculaire</b></td><td>9 positions du regard ; <b>ductions</b> (1 œil) et <b>versions</b> (2 yeux conjugués)</td></tr>
+          <tr><td><b>3. Cover-test</b></td><td>Cache un œil puis l'autre ; mouvement de <b>restitution</b> au retrait → identifie le muscle déficitaire</td></tr>
+          <tr><td><b>4. Verre rouge</b></td><td>Verre rouge sur l'œil droit (convention) ; diplopie <b>homonyme</b> (rouge à droite = convergence) ou <b>croisée</b> (rouge à gauche = divergence)</td></tr>
+          <tr><td><b>5. Hess-Lancaster</b></td><td>Lunettes rouge/vert, superposition de flèches ; cadre <b>petit</b> = œil paralysé (hypoaction) ; cadre <b>grand</b> = œil sain (hyperaction, loi de Hering)</td></tr>
+          <tr><td><b>6. Motricité intrinsèque</b></td><td>Anisocorie, réflexe photomoteur direct et consensuel (fibres parasympathiques du III)</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2. MONO VS BINOCULAIRE ============== -->
+  <section id="s2">
+    <div class="sec-head"><div class="sec-num">2</div><h2>Diplopie monoculaire vs binoculaire</h2></div>
+    <p class="sec-sub">Le test de référence : l'occlusion d'un œil, et les causes ophtalmologiques de la diplopie monoculaire</p>
+    <div class="grid g2">
+      <div class="card span">
+        <h3>Test de l'occlusion — distinction fondamentale</h3>
+        <table class="tbl"><thead><tr><th></th><th>Monoculaire</th><th>Binoculaire</th></tr></thead><tbody>
+          <tr><td>Test</td><td><b>Persiste</b> à l'occlusion de l'œil sain</td><td><b>Disparaît</b> à l'occlusion de n'importe quel œil</td></tr>
+          <tr><td>Mécanisme</td><td>Défaut optique du globe (diffraction)</td><td>Perte du parallélisme oculaire (paralysie/parésie)</td></tr>
+          <tr><td>Origine</td><td>Purement ophtalmologique</td><td>Neurologique ou orbitaire</td></tr>
+          <tr><td>Urgence/Imagerie</td><td><b>Aucune imagerie cérébrale</b></td><td>Imagerie systématique, orientée par la clinique</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card span">
+        <h3>Causes ophtalmologiques de diplopie monoculaire (avant → arrière)</h3>
+        <table class="tbl"><thead><tr><th>Atteinte</th><th>Causes</th></tr></thead><tbody>
+          <tr><td><b>Cornéenne</b></td><td>Astigmatisme important, kératocône, taie cornéenne (séquelle kératite/traumatisme)</td></tr>
+          <tr><td><b>Irienne</b></td><td><b>Iridodialyse</b> traumatique (déchirure base de l'iris)</td></tr>
+          <tr><td><b>Cristallinienne</b></td><td>Cataracte nucléaire, implant décentré (opéré)</td></tr>
+          <tr><td><b>Maculaire</b> (rare)</td><td>Membrane épirétinienne tractionnelle</td></tr>
+        </tbody></table>
+        <div class="callout"><span class="tag">À retenir</span><p>Si l'examen ophtalmologique est <b>strictement normal</b> → étiologie retenue = <b>fonctionnelle</b>. Prise en charge : examen ophtalmo classique, sans urgence.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3. TROPIES, DUCTIONS & VERGENCES ============== -->
+  <section id="s3">
+    <div class="sec-head"><div class="sec-num">3</div><h2>Tropies, ductions & vergences</h2></div>
+    <p class="sec-sub">Le vocabulaire de base de l'oculomotricité</p>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Tropies (strabisme)</h3>
+        <p>Déviation <b>anormale et permanente</b> des axes visuels.</p>
+        <table class="tbl"><thead><tr><th>Type</th><th>Direction</th></tr></thead><tbody>
+          <tr><td><b>Ésotropie</b></td><td>Vers l'intérieur</td></tr>
+          <tr><td><b>Exotropie</b></td><td>Vers l'extérieur</td></tr>
+          <tr><td><b>Hypertropie</b></td><td>Vers le haut</td></tr>
+          <tr><td><b>Hypotropie</b></td><td>Vers le bas</td></tr>
+        </tbody></table>
+        <div class="callout warn"><span class="tag">Piège</span><p>Tropie = déviation <b>permanente</b> ≠ <b>phorie</b> = déviation seulement <b>transitoire</b>.</p></div>
+      </div>
+      <div class="card">
+        <h3>Ductions (monoculaires) & vergences (binoculaires)</h3>
+        <p><b>Ductions</b> : mouvements d'un seul œil.</p>
+        <ul>
+          <li><b>Abduction</b> : vers l'extérieur</li>
+          <li><b>Adduction</b> : vers l'intérieur</li>
+        </ul>
+        <p style="margin-top:6px;"><b>Vergences</b> : les 2 yeux en sens opposé (vision en profondeur).</p>
+        <ul>
+          <li><b>Convergence</b> : les 2 yeux vers l'intérieur (vision de près)</li>
+          <li><b>Divergence</b> : les 2 yeux vers l'extérieur</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 4. PARALYSIES III, IV, VI ============== -->
+  <section id="s4">
+    <div class="sec-head"><div class="sec-num">4</div><h2>Paralysies du III, IV et VI</h2></div>
+    <p class="sec-sub">Symptomatologie, position vicieuse de la tête, aspect clinique observable</p>
+    <div class="grid g2">
+      <div class="card span">
+        <h3>Paralysie complète du III gauche — aspect clinique</h3>
+        <h4>En position primaire</h4>
+        <ul>
+          <li><b>Ptosis « providentiel »</b> : paupière complète fermée (masque la diplopie)</li>
+          <li><b>Divergence</b> : œil dévié en dehors (seul le droit latéral, innervé par le VI, reste fonctionnel)</li>
+          <li><b>Mydriase aréactive</b> : pupille dilatée, ne réagit pas à la lumière (atteinte intrinsèque)</li>
+        </ul>
+        <h4>Dans les positions du regard</h4>
+        <p><b>Ophtalmoplégie quasi complète</b> : impossible en adduction, élévation, abaissement. <b>Conservé</b> : regard en dehors (VI) et léger mouvement bas/dedans (IV, oblique supérieur).</p>
+        <div class="callout warn"><span class="tag">Piège</span><p>Paralysie III totale + atteinte pupillaire (mydriase) + douleur → <b>anévrisme</b> jusqu'à preuve du contraire — urgence (section 6).</p></div>
+      </div>
+      <div class="card span">
+        <h3>Paralysie du VI droit — aspect clinique</h3>
+        <ul>
+          <li>Position primaire : œil dévié <b>en dedans</b> (convergence, droit médial non contré)</li>
+          <li>Regard vers la droite (côté paralysé) : <b>abduction abolie/limitée</b>, œil bloqué au centre → diplopie horizontale</li>
+          <li>Regard vers la gauche : <b>adduction parfaitement conservée</b></li>
+        </ul>
+        <p style="font-size:13px;">Cover-test : en cachant l'œil sain, l'œil dévié (convergent) se redresse de <b>dedans en dehors</b> pour fixer la cible.</p>
+      </div>
+      <div class="card span">
+        <h3>Position vicieuse de la tête — torticolis compensateur</h3>
+        <p>La tête se positionne dans le <b>champ d'action du muscle paralysé</b> pour annuler la diplopie — signe à rechercher systématiquement dès l'inspection.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5. MYASTHÉNIE & VALEUR LOCALISATRICE DU VI ============== -->
+  <section id="s5">
+    <div class="sec-head"><div class="sec-num">5</div><h2>Myasthénie & faible valeur localisatrice du VI</h2></div>
+    <p class="sec-sub">Diagnostic différentiel majeur de la diplopie et particularité anatomique du nerf abducens</p>
+    <div class="grid g2">
+      <div class="card span">
+        <h3>Arguments cliniques en faveur d'une myasthénie</h3>
+        <h4>Caractéristiques de la diplopie</h4>
+        <ul>
+          <li><b>Fluctuante et variable</b> dans la journée — maître symptôme</li>
+          <li>Liée à la <b>fatigabilité</b> : ↑ à l'effort/fin de journée, disparaît au repos</li>
+          <li><b>Non systématisée</b> : peut mimer n'importe quelle paralysie oculomotrice</li>
+          <li><b>Absence de signes d'alarme</b> : non douloureuse, pupille normale (pas de mydriase)</li>
+        </ul>
+        <div class="callout warn"><span class="tag">Piège</span><p>Toujours évoquer une myasthénie devant une paralysie oculomotrice <b>totalement isolée</b>, même <b>sans fluctuation évidente</b>.</p></div>
+        <h4>Signes oculaires associés</h4>
+        <p><b>Ptosis</b> uni/bilatéral, majoré par la fatigue. <b>Test de fatigabilité</b> : regard prolongé vers le haut → majore le ptosis/trouble oculomoteur.</p>
+        <h4>Signes de généralisation (à rechercher systématiquement)</h4>
+        <ul>
+          <li>Déficit moteur proximal (membres, nuque)</li>
+          <li><b>Signes bulbaires</b> (urgence absolue) : fausses routes, dysphonie, troubles respiratoires</li>
+        </ul>
+        <p style="font-size:13px;margin-top:6px;">Confirmation : test à la <b>Prostigmine</b>, Ac anti-récepteurs ACh, EMG (bloc neuromusculaire). Recherche systématique d'un <b>thymome</b> associé.</p>
+      </div>
+      <div class="card span">
+        <h3>Faible valeur localisatrice du VI</h3>
+        <p>Le déficit du VI <b>n'indique pas</b> forcément une lésion focale sur son trajet — traduit le plus souvent une <b>HTIC</b>.</p>
+        <div class="callout"><span class="tag">À retenir</span><p>Mécanisme : HTIC → tassement du tronc cérébral vers le bas → <b>étirement</b> du VI à son point de fixation dure-mérien (ou compression dans l'angle ponto-cérébelleux). Conséquence : souvent <b>bilatérale</b>.</p></div>
+        <p>Devant une paralysie du VI + céphalées/nausées/œdème papillaire → suspecter <b>HTIC globale</b>, pas une lésion locale.</p>
+        <div class="callout warn"><span class="tag">Piège</span><p>À l'inverse, les paralysies du <b>III et du IV ont une vraie valeur localisatrice</b> : elles indiquent une lésion directe sur leur trajet/noyau spécifique.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 6. URGENCES & IMAGERIE ============== -->
+  <section id="s6">
+    <div class="sec-head"><div class="sec-num">6</div><h2>Urgences & indications d'imagerie</h2></div>
+    <p class="sec-sub">Paralysie du III = urgence vitale, stratégie d'imagerie, signes associés à valeur étiologique</p>
+    <div class="grid g2">
+      <div class="card span">
+        <h3>Paralysie aiguë du III — urgence vitale absolue</h3>
+        <p>Signe annonciateur de fissuration/rupture d'un <b>anévrisme intracrânien</b> (communicante postérieure ou carotide interne supraclinoïdienne) comprimant le nerf.</p>
+        <h4>Tableau d'alerte</h4>
+        <ul>
+          <li><b>Mydriase</b> (atteinte intrinsèque) — signe cardinal : compression des fibres parasympathiques périphériques</li>
+          <li><b>Douleur</b> : céphalées/douleurs fronto-orbitaires</li>
+          <li>Suspicion maximale chez le <b>sujet jeune</b> sans FDR vasculaire</li>
+        </ul>
+        <div class="callout warn"><span class="tag">Piège</span><p>CAT immédiate : adresser en <b>extrême urgence</b> (neurochirurgie) → angio-IRM/angioscanner sur-le-champ → si négatif/douteux et forte suspicion : <b>artériographie</b>. Traitement (souvent embolisation) dans les heures qui suivent.</p></div>
+      </div>
+      <div class="card span">
+        <h3>Indications d'imagerie selon l'orientation clinique</h3>
+        <table class="tbl"><thead><tr><th>Contexte</th><th>Imagerie</th></tr></thead><tbody>
+          <tr><td>Monoculaire</td><td><b>Aucune</b></td></tr>
+          <tr><td>III + mydriase + douleur</td><td>Angioscanner/angio-IRM en <b>extrême urgence</b> ± artériographie</td></tr>
+          <tr><td>Traumatisme crânien/facial</td><td>Scanner cérébral urgent + coupes orbite/séquences osseuses (fracture plancher orbitaire)</td></tr>
+          <tr><td>Signes de tronc cérébral (syndrome alterne)</td><td><b>IRM</b> (supérieure au scanner pour le tronc cérébral)</td></tr>
+          <tr><td>Céphalées violentes + sd méningé</td><td>Scanner sans injection (hémorragie sous-arachnoïdienne) ; IRM (apoplexie pituitaire)</td></tr>
+          <tr><td>Syndrome orbitaire (exophtalmie, chémosis)</td><td>Scanner/IRM orbites (Basedow, tumeur) ; si souffle/« tête de méduse » → angio (fistule carotido-caverneuse)</td></tr>
+          <tr><td>Atteinte de plusieurs nerfs crâniens</td><td>IRM ciblée sinus caverneux, loge parasellaire, apex orbitaire</td></tr>
+        </tbody></table>
+        <p style="font-size:13px;margin-top:6px;">Injection de produit de contraste utile pour tumeurs, causes inflammatoires, activité de l'orbitopathie dysthyroïdienne.</p>
+      </div>
+      <div class="card span">
+        <h3>Signes associés à valeur étiologique (interrogatoire + examen)</h3>
+        <table class="tbl"><thead><tr><th>Catégorie</th><th>Signes à rechercher</th></tr></thead><tbody>
+          <tr><td>Terrain</td><td>Âge, diabète, HTA, maladie thyroïdienne, ATCD cancer</td></tr>
+          <tr><td>Circonstances</td><td>Traumatisme, effort, lecture, fatigue</td></tr>
+          <tr><td>Mode/horaire</td><td>Brutal/progressif ; constante/transitoire/fluctuante ; direction et position du regard</td></tr>
+          <tr><td><b>Douleur</b> (signal d'alarme)</td><td>Anévrisme, Horton, fistule ; + céphalées, vertiges, nausées</td></tr>
+          <tr><td>Inspection</td><td>Torticolis compensateur, ptosis (III/myasthénie), rétraction palpébrale (thyroïde), anisocorie</td></tr>
+          <tr><td>Syndrome orbitaire</td><td>Exophtalmie, chémosis, « tête de méduse », souffle crânien</td></tr>
+          <tr><td>Cutané</td><td>Éruption vésiculeuse V (zona ophtalmique)</td></tr>
+          <tr><td>Neuro central</td><td>Syndrome alterne (hémiplégie + diplopie), syndrome cérébelleux</td></tr>
+          <tr><td>Myasthénie généralisée</td><td>Déficit proximal, signes bulbaires</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+  </div><!-- /#fiche -->
+
+  <!-- ============== FLASHCARDS ============== -->
+  <div class="module" id="m-cards">
+    <div class="module-head">
+      <div class="ic">🎴</div>
+      <div><h2>Flashcards</h2></div>
+    </div>
+    <div class="fc-stage"><div class="flashcard" id="flashcard" style="display:none;">
+      <div class="fc-inner">
+        <div class="fc-face fc-front"><div class="lbl">Question</div><div class="txt" id="fcFront"></div></div>
+        <div class="fc-face fc-back"><div class="lbl">Réponse</div><div class="txt" id="fcBack"></div></div>
+      </div>
+    </div><div class="fc-empty" id="fcEmpty">Aucune carte pour l'instant — ajoute-en une ci-dessous.</div></div>
+    <div class="fc-ctrl" id="fcCtrl" style="display:none;">
+      <button id="fcPrev">← Préc.</button>
+      <span class="fc-pos" id="fcPos"></span>
+      <button id="fcNext">Suiv. →</button>
+      <button id="fcShuffle">🔀 Mélanger</button>
+      <button id="fcDel">🗑 Supprimer</button>
+    </div>
+    <div class="addform two">
+      <input class="f" id="cardFront" placeholder="Recto (question)…">
+      <input class="f" id="cardBack" placeholder="Verso (réponse)…">
+      <div class="span-full"><button class="btn" id="cardAdd">Ajouter la carte</button></div>
+    </div>
+  </div>
+
+  <!-- ============== CARNET D'ERREUR ============== -->
+  <div class="module" id="m-carnet">
+    <div class="module-head">
+      <div class="ic">📓</div>
+      <div><h2>Carnet d'erreur</h2></div>
+    </div>
+    <div id="carnetList"></div>
+    <div class="addform">
+      <textarea class="f" id="carnetText" placeholder="Décris ton erreur, le piège, la bonne réponse…"></textarea>
+      <div class="thumbs" id="carnetThumbs"></div>
+      <div class="formrow">
+        <button class="btn" id="carnetAdd">Ajouter au carnet</button>
+        <label class="btn ghost sm" for="carnetImg">🖼 Ajouter une image</label>
+        <input type="file" id="carnetImg" accept="image/*" multiple hidden>
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
+</div>
+
+<!-- overlays -->
+<div class="scrim" id="scrim"></div>
+<aside class="toc" id="toc"><button class="close" id="tocClose">×</button><h4>Plan de la fiche</h4><div id="tocBody"></div></aside>
+<button id="maskbtn">Masquer</button>
+<div class="toast" id="toast"></div>
+
+<div class="fmtbar" id="fmtbar">
+  <button type="button" data-cmd="bold" title="Gras (Ctrl/⌘+B)"><b>B</b></button>
+  <button type="button" data-cmd="italic" title="Italique (Ctrl/⌘+I)"><i>I</i></button>
+  <button type="button" data-cmd="underline" title="Souligné (Ctrl/⌘+U)"><u>U</u></button>
+  <span class="fmt-sep"></span>
+  <span class="fmt-lbl">Texte</span>
+  <button type="button" class="sw" data-fore="#1C1B19"></button>
+  <button type="button" class="sw" data-fore="#C0392B"></button>
+  <button type="button" class="sw" data-fore="#1F5FA8"></button>
+  <button type="button" class="sw" data-fore="#0E8C8C"></button>
+  <button type="button" class="sw" data-fore="#9333A8"></button>
+  <span class="fmt-sep"></span>
+  <span class="fmt-lbl">Surligner</span>
+  <button type="button" class="sw" data-hl="#FFE066"></button>
+  <button type="button" class="sw" data-hl="#B6E5A8"></button>
+  <button type="button" class="sw" data-hl="#F8B9D4"></button>
+  <button type="button" class="sw" data-hl="#A8D8F0"></button>
+  <span class="fmt-sep"></span>
+  <button type="button" data-cmd="removeFormat" title="Effacer la mise en forme">⌫</button>
+</div>
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+<button class="backtop" id="backtop">↑</button>
+
+<script>
+"use strict";
+/* ============ STORAGE ============ */
+const KEY='fiche-item102-v2';
+function loadDB(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+let DB=Object.assign({trous:[],cards:[],carnet:[],stars:[],notes:'',calloutEdits:{},calloutDeleted:[],calloutsAdded:[],calloutParent:{},calloutColor:{},cardEdits:{},theme:'light'},loadDB());
+if(!DB.cardEdits||typeof DB.cardEdits!=='object'||Array.isArray(DB.cardEdits)){DB.cardEdits={};}
+else{
+  Object.keys(DB.cardEdits).forEach(cid=>{
+    const entry=DB.cardEdits[cid];
+    if(!entry||typeof entry!=='object'||Array.isArray(entry)){delete DB.cardEdits[cid];return;}
+    Object.keys(entry).forEach(i=>{
+      const leaf=entry[i];
+      if(!leaf||typeof leaf!=='object'||typeof leaf.text!=='string')delete entry[i];
+    });
+    if(!Object.keys(entry).length)delete DB.cardEdits[cid];
+  });
+}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){toast("⚠️ Sauvegarde impossible (stockage plein/bloqué). Exporte tes données.");}}
+const body=document.body;
+const DEFAULT_CARDS=[];
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2600);}
+const fiche=document.getElementById('fiche');
+
+/* ============ THEME ============ */
+function applyTheme(){document.documentElement.setAttribute('data-theme',DB.theme==='dark'?'dark':'light');
+  document.getElementById('themeBtn').textContent=DB.theme==='dark'?'☀️':'🌙';}
+document.getElementById('themeBtn').onclick=()=>{DB.theme=DB.theme==='dark'?'light':'dark';applyTheme();persist();};
+applyTheme();
+
+/* ============ MODE RÉVISION ============ */
+const revBtn=document.getElementById('revBtn');
+function toggleRev(){body.classList.toggle('revision');revBtn.classList.toggle('active',body.classList.contains('revision'));
+  if(body.classList.contains('editmode'))toggleEdit();
+  if(!body.classList.contains('revision'))document.querySelectorAll('.cle.show').forEach(e=>e.classList.remove('show'));}
+revBtn.onclick=toggleRev;
+revBtn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleRev();}};
+document.addEventListener('click',e=>{
+  if(body.classList.contains('revision')&&!body.classList.contains('editmode')&&!body.classList.contains('starmode')&&e.target.classList.contains('cle'))
+    e.target.classList.toggle('show');
+});
+
+/* ============ TROUS PERSONNALISÉS ============ */
+function ficheTextNodes(){
+  const w=document.createTreeWalker(fiche,NodeFilter.SHOW_TEXT,{acceptNode(n){
+    if(!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+    if(n.parentElement.closest('mark.srch'))return NodeFilter.FILTER_SKIP;
+    if(n.parentElement.closest('.co-ctrl, .addco, .card-ctrl'))return NodeFilter.FILTER_REJECT;
+    return NodeFilter.FILTER_ACCEPT;}});
+  const a=[];let n;while(n=w.nextNode())a.push(n);return a;
+}
+/* applique un trou = enrobe la (occ+1)-ème occurrence de `text` */
+function applyTrou(text,occ,uid){
+  if(!text)return false;
+  const nodes=ficheTextNodes();let k=0;
+  for(const node of nodes){
+    let from=0,idx;
+    while((idx=node.nodeValue.indexOf(text,from))!==-1){
+      if(k===occ){
+        const r=document.createRange();r.setStart(node,idx);r.setEnd(node,idx+text.length);
+        const span=document.createElement('span');span.className='cle cle-user';span.dataset.uid=uid;
+        try{r.surroundContents(span);}catch(e){return false;}
+        return true;
+      }
+      k++;from=idx+text.length;
+    }
+  }
+  return false;
+}
+function restoreTrous(){(DB.trous||[]).forEach(t=>applyTrou(t.text,t.occ,t.uid));}
+
+/* éditeur : sélection -> bouton masquer */
+const editBtn=document.getElementById('editBtn'), maskbtn=document.getElementById('maskbtn');
+function toggleEdit(){
+  body.classList.toggle('editmode');
+  const on=body.classList.contains('editmode');
+  editBtn.classList.toggle('active',on);
+  if(on){if(!body.classList.contains('revision')){body.classList.add('revision');revBtn.classList.add('active');}toast("Sélectionne du texte puis « Masquer » · ✎ modifie · 🎨 couleur · glisse un encadré dans une carte.");}
+  else{maskbtn.style.display='none';}
+  fiche.querySelectorAll('.callout').forEach(c=>{if(c.classList.contains('editing'))toggleEditCallout(c);c.draggable=on;});
+  fiche.querySelectorAll('.card.c-editing').forEach(c=>toggleEditCard(c));
+  updateFmtbar();
+}
+editBtn.onclick=toggleEdit;
+editBtn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleEdit();}};
+
+document.addEventListener('mouseup',e=>{
+  if(!body.classList.contains('editmode'))return;
+  if(e.target===maskbtn)return;
+  setTimeout(()=>{
+    const sel=window.getSelection();
+    if(!sel||sel.isCollapsed||!sel.toString().trim()){maskbtn.style.display='none';return;}
+    const r=sel.getRangeAt(0);
+    if(!fiche.contains(r.commonAncestorContainer)){maskbtn.style.display='none';return;}
+    const anc=r.commonAncestorContainer.nodeType===1?r.commonAncestorContainer:r.commonAncestorContainer.parentElement;
+    if(anc&&anc.closest('[contenteditable="true"], .co-ctrl, .addco')){maskbtn.style.display='none';return;}
+    const rect=r.getBoundingClientRect();
+    maskbtn.style.display='block';
+    maskbtn.style.top=(window.scrollY+rect.top-40)+'px';
+    maskbtn.style.left=(window.scrollX+rect.left+rect.width/2-44)+'px';
+  },10);
+});
+maskbtn.onclick=()=>{
+  const sel=window.getSelection();if(!sel||sel.isCollapsed)return;
+  const r=sel.getRangeAt(0);
+  if(r.startContainer!==r.endContainer||r.startContainer.nodeType!==3){toast("Sélectionne un passage dans une seule ligne.");return;}
+  const text=sel.toString();
+  /* calcule l'occurrence en parcourant les nœuds dans l'ordre */
+  const nodes=ficheTextNodes();let occ=0,found=false;
+  for(const node of nodes){
+    if(node===r.startContainer){
+      let from=0,idx;while((idx=node.nodeValue.indexOf(text,from))!==-1){if(idx===r.startOffset){found=true;break;}occ++;from=idx+text.length;}
+      break;
+    }
+    let from=0,idx;while((idx=node.nodeValue.indexOf(text,from))!==-1){occ++;from=idx+text.length;}
+  }
+  if(!found){toast("Impossible de cacher cette sélection.");return;}
+  const uid='u'+Date.now()+Math.floor(Math.random()*999);
+  sel.removeAllRanges();
+  if(applyTrou(text,occ,uid)){DB.trous.push({text,occ,uid});persist();maskbtn.style.display='none';toast("Trou ajouté ✓");}
+  else toast("Impossible de cacher cette sélection.");
+};
+/* clic sur un trou perso en mode éditeur -> suppression */
+document.addEventListener('click',e=>{
+  if(!body.classList.contains('editmode'))return;
+  const t=e.target.closest('.cle-user');if(!t)return;
+  const uid=t.dataset.uid;
+  DB.trous=DB.trous.filter(x=>x.uid!==uid);persist();
+  const parent=t.parentNode;while(t.firstChild)parent.insertBefore(t.firstChild,t);parent.removeChild(t);parent.normalize();
+  toast("Trou retiré");
+});
+
+/* ============ ÉTOILES ANNALES ============ */
+const starBtn=document.getElementById('starBtn');
+function starrables(){return [...fiche.querySelectorAll('li, tbody tr')];}
+function indexStarrables(){starrables().forEach((el,i)=>el.dataset.sid=i);}
+function restoreStars(){const set=new Set(DB.stars||[]);starrables().forEach((el,i)=>el.classList.toggle('starred',set.has(i)));}
+function toggleStarMode(){
+  body.classList.toggle('starmode');
+  const on=body.classList.contains('starmode');
+  starBtn.classList.toggle('active',on);
+  if(on&&body.classList.contains('editmode'))toggleEdit();
+  if(on&&body.classList.contains('filterstar'))toggleFilter();
+  if(on)toast("Clique une puce ou une ligne de tableau pour la marquer ⭐ (déjà tombée).");
+}
+starBtn.onclick=toggleStarMode;
+starBtn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleStarMode();}};
+fiche.addEventListener('click',e=>{
+  if(!body.classList.contains('starmode'))return;
+  const el=e.target.closest('li, tbody tr');if(!el||!fiche.contains(el))return;
+  e.preventDefault();
+  const sid=Number(el.dataset.sid);
+  el.classList.toggle('starred');
+  DB.stars=DB.stars||[];
+  if(el.classList.contains('starred')){if(!DB.stars.includes(sid))DB.stars.push(sid);}
+  else DB.stars=DB.stars.filter(x=>x!==sid);
+  persist();
+});
+
+/* ============ FILTRE ANNALES ============ */
+const filterBtn=document.getElementById('filterBtn');
+function toggleFilter(){
+  if(!body.classList.contains('filterstar')){
+    if(!(DB.stars&&DB.stars.length)){toast("Aucune notion marquée ⭐ pour l'instant.");return;}
+    if(body.classList.contains('starmode'))toggleStarMode();
+  }
+  body.classList.toggle('filterstar');
+  const on=body.classList.contains('filterstar');
+  filterBtn.classList.toggle('active',on);
+  if(on){toast("Affichage : notions ⭐ uniquement.");scrollTo({top:0,behavior:'smooth'});}
+  else toast("Affichage complet.");
+}
+filterBtn.onclick=toggleFilter;
+filterBtn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleFilter();}};
+
+/* ============ CONTENU ÉDITABLE DES CARTES (texte uniquement, structure protégée) ============ */
+const LEAF_TAGS=['P','LI','H3','H4','H5','TD','TH','SPAN','B','I','U','EM','STRONG'];
+function isLeaf(el){
+  if(el.nodeType!==1)return false;
+  if(el.closest('.card-ctrl, .co-ctrl, .addco'))return false;
+  if(!LEAF_TAGS.includes(el.tagName))return false;
+  // une feuille ne doit contenir aucun élément enfant qui soit lui-même une feuille de plus bas niveau qu'on édite séparément
+  // on choisit : feuille = élément dont AUCUN descendant n'est un élément de type bloc/conteneur (UL/TABLE/DIV)
+  if(el.querySelector('ul,ol,table,div'))return false;
+  return true;
+}
+function cardLeaves(card){
+  // on prend les feuilles "les plus hautes" possibles : un <li> qui ne contient que du texte/inline est une feuille,
+  // on ne descend pas dans ses <b>/<span> pour ne pas multiplier les zones éditables inutilement.
+  const all=[...card.querySelectorAll(LEAF_TAGS.join(','))];
+  const leaves=[];
+  all.forEach(el=>{
+    if(!isLeaf(el))return;
+    // ignore si un ancêtre (autre que .card lui-même) est déjà une feuille retenue
+    let p=el.parentElement,nested=false;
+    while(p&&p!==card){if(leaves.includes(p)){nested=true;break;}p=p.parentElement;}
+    if(!nested)leaves.push(el);
+  });
+  return leaves;
+}
+function indexCardLeaves(card){
+  cardLeaves(card).forEach((el,i)=>{el.dataset.leaf=String(i);});
+}
+function injectCardControls(card){
+  if(card.querySelector('.card-ctrl'))return;
+  const ctrl=document.createElement('div');ctrl.className='card-ctrl';
+  const ed=document.createElement('button');ed.type='button';ed.textContent='✎';ed.title='Modifier le texte';
+  const reset=document.createElement('button');reset.type='button';reset.textContent='↶';reset.title='Réinitialiser cette carte';
+  ed.onclick=ev=>{ev.stopPropagation();toggleEditCard(card);};
+  reset.onclick=ev=>{ev.stopPropagation();resetCard(card);};
+  ctrl.appendChild(ed);ctrl.appendChild(reset);card.appendChild(ctrl);
+}
+function blockStructuralKeys(e){
+  // empêche tout ce qui pourrait changer la structure : Entrée (nouveau bloc), Tab, collage de HTML riche
+  if(e.key==='Enter'){e.preventDefault();return;}
+}
+function blockPaste(e){
+  e.preventDefault();
+  const text=(e.clipboardData||window.clipboardData).getData('text/plain');
+  document.execCommand('insertText',false,text);
+}
+function toggleEditCard(card){
+  const editing=card.classList.toggle('c-editing');
+  const leaves=cardLeaves(card);
+  const btn=card.querySelector('.card-ctrl button');
+  if(editing){
+    indexCardLeaves(card);
+    leaves.forEach(el=>{
+      el.classList.add('c-leaf');
+      el.setAttribute('contenteditable','true');
+      el.addEventListener('keydown',blockStructuralKeys);
+      el.addEventListener('paste',blockPaste);
+    });
+    if(btn)btn.textContent='✓';
+    (leaves[0]||card).focus();
+  }else{
+    leaves.forEach(el=>{
+      el.removeAttribute('contenteditable');
+      el.removeEventListener('keydown',blockStructuralKeys);
+      el.removeEventListener('paste',blockPaste);
+    });
+    if(btn)btn.textContent='✎';
+    saveCard(card);
+  }
+  updateFmtbar();
+}
+function saveCard(card){
+  const cid=card.dataset.cardid;
+  const leaves=cardLeaves(card);
+  DB.cardEdits=DB.cardEdits||{};
+  const entry=DB.cardEdits[cid]||{};
+  leaves.forEach((el,i)=>{
+    if(!entry[i])entry[i]={orig:CARD_ORIGINAL[cid]?CARD_ORIGINAL[cid][i]:el.textContent,text:el.textContent};
+    entry[i].text=el.textContent;
+  });
+  DB.cardEdits[cid]=entry;
+  persist();
+}
+function resetCard(card){
+  if(!confirm('Réinitialiser le texte de cette carte à sa version d\'origine ?'))return;
+  const cid=card.dataset.cardid;
+  const orig=CARD_ORIGINAL[cid];
+  if(orig){
+    indexCardLeaves(card);
+    cardLeaves(card).forEach((el,i)=>{if(orig[i]!==undefined)el.textContent=orig[i];});
+  }
+  if(DB.cardEdits)delete DB.cardEdits[cid];
+  persist();
+  toast('Carte réinitialisée ✓');
+}
+let CARD_ORIGINAL={};
+function captureOriginals(){
+  fiche.querySelectorAll('.card').forEach(card=>{
+    const cid=card.dataset.cardid;
+    indexCardLeaves(card);
+    CARD_ORIGINAL[cid]=cardLeaves(card).map(el=>el.textContent);
+  });
+}
+function applyCardEdits(){
+  const edits=DB.cardEdits||{};
+  fiche.querySelectorAll('.card').forEach(card=>{
+    const cid=card.dataset.cardid;
+    const entry=edits[cid];
+    if(!entry||typeof entry!=='object'||Array.isArray(entry))return;
+    indexCardLeaves(card);
+    cardLeaves(card).forEach((el,i)=>{
+      const leaf=entry[i];
+      if(leaf&&typeof leaf==='object'&&typeof leaf.text==='string')el.textContent=leaf.text;
+    });
+  });
+}
+function buildCardEditing(){
+  fiche.querySelectorAll('.card').forEach(card=>{injectCardControls(card);});
+}
+const sInput=document.getElementById('searchInput'),sCnt=document.getElementById('searchCnt');
+let matches=[],curMatch=-1;
+function clearSearch(){document.querySelectorAll('mark.srch').forEach(m=>{const p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize();});matches=[];curMatch=-1;sCnt.textContent='';}
+function runSearch(q){
+  clearSearch();if(!q||q.length<2){return;}
+  const ql=q.toLowerCase();const nodes=ficheTextNodes();
+  nodes.forEach(node=>{
+    const val=node.nodeValue,low=val.toLowerCase();if(!low.includes(ql))return;
+    const frag=document.createDocumentFragment();let from=0,idx;
+    while((idx=low.indexOf(ql,from))!==-1){
+      if(idx>from)frag.appendChild(document.createTextNode(val.slice(from,idx)));
+      const m=document.createElement('mark');m.className='srch';m.textContent=val.slice(idx,idx+q.length);frag.appendChild(m);matches.push(m);
+      from=idx+q.length;
+    }
+    if(from<val.length)frag.appendChild(document.createTextNode(val.slice(from)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  sCnt.textContent=matches.length?('1/'+matches.length):'0';
+  if(matches.length){curMatch=0;focusMatch();}
+}
+function focusMatch(){matches.forEach(m=>m.classList.remove('cur'));const m=matches[curMatch];if(!m)return;m.classList.add('cur');
+  m.scrollIntoView({behavior:'smooth',block:'center'});sCnt.textContent=(curMatch+1)+'/'+matches.length;}
+let sT;sInput.addEventListener('input',()=>{clearTimeout(sT);sT=setTimeout(()=>runSearch(sInput.value.trim()),200);});
+sInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(matches.length){curMatch=(curMatch+1)%matches.length;focusMatch();}}});
+document.getElementById('searchNext').onclick=()=>{if(matches.length){curMatch=(curMatch+1)%matches.length;focusMatch();}};
+document.getElementById('searchPrev').onclick=()=>{if(matches.length){curMatch=(curMatch-1+matches.length)%matches.length;focusMatch();}};
+
+/* ============ SOMMAIRE ============ */
+const toc=document.getElementById('toc'),scrim=document.getElementById('scrim');
+function buildTOC(){
+  const body=document.getElementById('tocBody');body.innerHTML='';
+  fiche.querySelectorAll('section').forEach(sec=>{
+    const h=sec.querySelector('h2'),a=document.createElement('a');a.className='head';a.href='#'+sec.id;a.textContent=h.textContent;
+    a.onclick=closeTOC;body.appendChild(a);
+    sec.querySelectorAll('.card h3').forEach((h3,i)=>{
+      if(!h3.id)h3.id=sec.id+'-c'+i;
+      const s=document.createElement('a');s.className='sub';s.href='#'+h3.id;s.textContent=h3.textContent;s.onclick=closeTOC;body.appendChild(s);
+    });
+  });
+  ['m-cards','m-carnet'].forEach(id=>{const el=document.getElementById(id);const a=document.createElement('a');a.className='head';a.href='#'+id;a.textContent=el.querySelector('h2').textContent;a.onclick=closeTOC;body.appendChild(a);});
+}
+function openTOC(){buildTOC();toc.classList.add('open');scrim.classList.add('on');}
+function closeTOC(){toc.classList.remove('open');scrim.classList.remove('on');}
+document.getElementById('tocBtn').onclick=openTOC;
+document.getElementById('tocClose').onclick=closeTOC;
+scrim.onclick=closeTOC;
+
+/* ============ FLASHCARDS ============ */
+const fcEl=document.getElementById('flashcard'),fcFront=document.getElementById('fcFront'),fcBack=document.getElementById('fcBack');
+const fcEmpty=document.getElementById('fcEmpty'),fcCtrl=document.getElementById('fcCtrl'),fcPos=document.getElementById('fcPos');
+/* ============ FLASHCARDS GLOBALES (partagées entre toutes les fiches) ============ */
+function loadGlobalCards(){try{return JSON.parse(localStorage.getItem('flashcards-global'))||{};}catch(e){return {};}}
+function syncCardsToGlobal(){
+  const g=loadGlobalCards();
+  g[ITEM_NUM]={itemTitle:ITEM_TITLE,specs:ITEM_SPECS,cards:DB.cards};
+  try{localStorage.setItem('flashcards-global',JSON.stringify(g));}catch(e){}
+}
+
+let fcIdx=0;
+function renderCard(){
+  const cards=DB.cards;
+  if(!cards.length){fcEl.style.display='none';fcCtrl.style.display='none';fcEmpty.style.display='block';return;}
+  fcEmpty.style.display='none';fcEl.style.display='block';fcCtrl.style.display='flex';
+  if(fcIdx>=cards.length)fcIdx=0;
+  fcEl.classList.remove('flip');
+  fcFront.textContent=cards[fcIdx].front;fcBack.textContent=cards[fcIdx].back;
+  fcPos.textContent=(fcIdx+1)+' / '+cards.length;
+}
+fcEl.onclick=()=>{
+  if(fcEl.classList.contains('flip')){fcIdx=(fcIdx+1)%DB.cards.length;renderCard();}
+  else{fcEl.classList.add('flip');}
+};
+document.getElementById('fcNext').onclick=()=>{fcIdx=(fcIdx+1)%DB.cards.length;renderCard();};
+document.getElementById('fcPrev').onclick=()=>{fcIdx=(fcIdx-1+DB.cards.length)%DB.cards.length;renderCard();};
+document.getElementById('fcShuffle').onclick=()=>{for(let i=DB.cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[DB.cards[i],DB.cards[j]]=[DB.cards[j],DB.cards[i]];}fcIdx=0;persist();syncCardsToGlobal();renderCard();toast("Mélangé 🔀");};
+document.getElementById('fcDel').onclick=()=>{if(!DB.cards.length)return;DB.cards.splice(fcIdx,1);persist();syncCardsToGlobal();renderCard();toast("Carte supprimée");};
+document.getElementById('cardAdd').onclick=()=>{
+  const f=document.getElementById('cardFront'),b=document.getElementById('cardBack');
+  if(!f.value.trim()||!b.value.trim()){toast("Remplis le recto et le verso.");return;}
+  DB.cards.push({front:f.value.trim(),back:b.value.trim()});persist();syncCardsToGlobal();
+  f.value='';b.value='';fcIdx=DB.cards.length-1;renderCard();toast("Carte ajoutée ✓");
+};
+
+/* ============ CARNET D'ERREUR ============ */
+const carnetList=document.getElementById('carnetList'),carnetThumbs=document.getElementById('carnetThumbs');
+let pendingImgs=[];
+function renderThumbs(){
+  carnetThumbs.innerHTML='';
+  pendingImgs.forEach((src,i)=>{
+    const d=document.createElement('div');d.className='t';
+    const img=document.createElement('img');img.src=src;
+    const x=document.createElement('button');x.className='x';x.textContent='×';x.onclick=()=>{pendingImgs.splice(i,1);renderThumbs();};
+    d.appendChild(img);d.appendChild(x);carnetThumbs.appendChild(d);
+  });
+}
+/* ============ CARNET D'ERREUR GLOBAL (partagé entre toutes les fiches) ============ */
+const ITEM_NUM=102, ITEM_TITLE="Diplopie", ITEM_SPECS=["Neurologie","Ophtalmologie"];
+function loadGlobalCarnet(){try{return JSON.parse(localStorage.getItem('carnet-global'))||[];}catch(e){return [];}}
+function saveGlobalCarnet(arr){try{localStorage.setItem('carnet-global',JSON.stringify(arr));}catch(e){}}
+function pushToGlobalCarnet(entry){
+  const g=loadGlobalCarnet();
+  g.push({id:entry.id,itemNum:ITEM_NUM,itemTitle:ITEM_TITLE,date:entry.date,text:entry.text,imgs:entry.imgs});
+  saveGlobalCarnet(g);
+}
+function removeFromGlobalCarnet(id){
+  saveGlobalCarnet(loadGlobalCarnet().filter(e=>e.id!==id));
+}
+function uid(){return 'c'+Date.now()+Math.floor(Math.random()*9999);}
+
+function renderCarnet(){
+  carnetList.innerHTML='';
+  if(!DB.carnet.length){const p=document.createElement('p');p.style.cssText='color:var(--ink-faint);font-size:13.5px;margin:6px 0 0;';p.textContent="Ton carnet est vide pour l'instant.";carnetList.appendChild(p);return;}
+  DB.carnet.slice().reverse().forEach(entry=>{
+    const realIdx=DB.carnet.indexOf(entry);
+    const e=document.createElement('div');e.className='entry';
+    const meta=document.createElement('div');meta.className='meta';
+    const date=document.createElement('span');date.className='date';date.textContent=entry.date;
+    const del=document.createElement('button');del.className='del';del.textContent='🗑 supprimer';
+    del.onclick=()=>{DB.carnet.splice(realIdx,1);persist();if(entry.id)removeFromGlobalCarnet(entry.id);renderCarnet();toast("Entrée supprimée");};
+    meta.appendChild(date);meta.appendChild(del);e.appendChild(meta);
+    if(entry.text){const b=document.createElement('div');b.className='body';b.textContent=entry.text;e.appendChild(b);}
+    if(entry.imgs&&entry.imgs.length){const wrap=document.createElement('div');wrap.className='imgs';
+      entry.imgs.forEach(src=>{const im=document.createElement('img');im.src=src;im.onclick=()=>openLightbox(src);wrap.appendChild(im);});e.appendChild(wrap);}
+    carnetList.appendChild(e);
+  });
+}
+function filesToImgs(files){
+  [...files].forEach(file=>{if(!file.type.startsWith('image/'))return;
+    const reader=new FileReader();reader.onload=ev=>{pendingImgs.push(ev.target.result);renderThumbs();};reader.readAsDataURL(file);});
+}
+document.getElementById('carnetImg').addEventListener('change',e=>{filesToImgs(e.target.files);e.target.value='';});
+document.getElementById('carnetText').addEventListener('paste',e=>{
+  const items=e.clipboardData&&e.clipboardData.items;if(!items)return;
+  for(const it of items){if(it.type.startsWith('image/')){const f=it.getAsFile();if(f){const r=new FileReader();r.onload=ev=>{pendingImgs.push(ev.target.result);renderThumbs();toast("Capture ajoutée 📎");};r.readAsDataURL(f);}}}
+});
+document.getElementById('carnetAdd').onclick=()=>{
+  const t=document.getElementById('carnetText');
+  if(!t.value.trim()&&!pendingImgs.length){toast("Ajoute du texte ou une image.");return;}
+  const d=new Date();const date=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})+' · '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const entry={id:uid(),date,text:t.value.trim(),imgs:pendingImgs.slice()};
+  DB.carnet.push(entry);persist();pushToGlobalCarnet(entry);
+  t.value='';pendingImgs=[];renderThumbs();renderCarnet();toast("Ajouté au carnet ✓");
+};
+
+/* ============ LIGHTBOX ============ */
+const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lightboxImg');
+function openLightbox(src){lbImg.src=src;lb.classList.add('on');}
+lb.onclick=()=>lb.classList.remove('on');
+
+/* ============ EXPORT / IMPORT ============ */
+document.getElementById('exportBtn').onclick=()=>{
+  const data=JSON.stringify({trous:DB.trous,cards:DB.cards,carnet:DB.carnet,stars:DB.stars,notes:DB.notes,calloutEdits:DB.calloutEdits,calloutDeleted:DB.calloutDeleted,calloutsAdded:DB.calloutsAdded,calloutParent:DB.calloutParent,calloutColor:DB.calloutColor,cardEdits:DB.cardEdits,theme:DB.theme,_v:2,_date:new Date().toISOString()},null,2);
+  const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='item-102-diplopie-sauvegarde.json';a.click();URL.revokeObjectURL(url);
+  toast("Sauvegarde exportée 💾");
+};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;const reader=new FileReader();
+  reader.onload=ev=>{try{
+    const d=JSON.parse(ev.target.result);
+    if(!confirm("Importer cette sauvegarde ? Tes ajouts actuels (trous, flashcards, carnet, encadrés, notes, étoiles) seront remplacés."))return;
+    DB.trous=d.trous||[];DB.cards=d.cards||[];DB.carnet=d.carnet||[];DB.stars=d.stars||[];DB.notes=d.notes||'';
+    DB.calloutEdits=d.calloutEdits||{};DB.calloutDeleted=d.calloutDeleted||[];DB.calloutsAdded=d.calloutsAdded||[];
+    DB.calloutParent=d.calloutParent||{};DB.calloutColor=d.calloutColor||{};
+    DB.cardEdits=d.cardEdits||{};
+    if(d.theme)DB.theme=d.theme;DB._seeded=true;
+    persist();location.reload();
+  }catch(err){toast("Fichier invalide.");}};
+  reader.readAsText(file);e.target.value='';
+});
+
+/* ============ DIVERS ============ */
+const bt=document.getElementById('backtop');
+addEventListener('scroll',()=>bt.classList.toggle('on',scrollY>500));
+bt.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+const links=[...document.querySelectorAll('.nav a')];
+const obs=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){const id='#'+en.target.id;
+  links.forEach(l=>{const on=l.getAttribute('href')===id;l.style.background=on?'var(--card)':'';l.style.borderColor=on?'var(--line)':'transparent';});}}),
+  {rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('#fiche section, .module').forEach(s=>obs.observe(s));
+
+/* ============ BARRE DE PROGRESSION (sections de cours uniquement) ============ */
+const progressFill=document.getElementById('progressFill');
+const progStart=document.getElementById('s1');
+const progEnd=document.getElementById('s6');
+function updateProgress(){
+  if(!progStart||!progEnd){progressFill.style.width='0%';return;}
+  const top=progStart.getBoundingClientRect().top+scrollY;
+  const bottom=progEnd.getBoundingClientRect().bottom+scrollY;
+  const total=bottom-top;
+  if(total<=0){progressFill.style.width='0%';return;}
+  const done=(scrollY+innerHeight*0.5)-top;
+  const pct=Math.max(0,Math.min(100,(done/total)*100));
+  progressFill.style.width=pct+'%';
+}
+addEventListener('scroll',updateProgress,{passive:true});
+addEventListener('resize',updateProgress);
+updateProgress();
+
+/* ============ ENCADRÉS PERSONNALISABLES ============ */
+let dragCid=null;
+const CO_COLORS=[['Auto',''],['Rouge','red'],['Jaune','yellow'],['Bleu','blue'],['Rose','pink'],['Violet','violet'],['Vert','teal'],['Gris','gray']];
+function applyCalloutColor(co,name){
+  if(name)co.dataset.color=name;else co.removeAttribute('data-color');
+  DB.calloutColor=DB.calloutColor||{};
+  if(name)DB.calloutColor[co.dataset.cid]=name;else delete DB.calloutColor[co.dataset.cid];
+  persist();
+}
+function indexCards(){[...fiche.querySelectorAll('.card')].forEach((c,i)=>c.dataset.cardid='card'+i);}
+function injectCalloutControls(co){
+  if(co.querySelector('.co-ctrl'))return;
+  const ctrl=document.createElement('div');ctrl.className='co-ctrl';ctrl.setAttribute('contenteditable','false');
+  const ed=document.createElement('button');ed.type='button';ed.textContent='✎';ed.title='Modifier';
+  const del=document.createElement('button');del.type='button';del.textContent='🗑';del.title='Supprimer';
+  const colorBtn=document.createElement('button');colorBtn.type='button';colorBtn.className='co-colbtn';colorBtn.title='Couleur';colorBtn.textContent='🎨';
+  const pal=document.createElement('div');pal.className='co-palette';pal.setAttribute('contenteditable','false');
+  CO_COLORS.forEach(([label,name])=>{
+    const sw=document.createElement('button');sw.type='button';sw.className='cpsw';sw.title=label;
+    if(name){sw.style.background='var(--co-'+name+'-bg)';sw.style.boxShadow='inset 0 0 0 2px var(--co-'+name+')';}else{sw.textContent='∅';}
+    sw.onclick=ev=>{ev.stopPropagation();applyCalloutColor(co,name);pal.classList.remove('open');};
+    pal.appendChild(sw);
+  });
+  colorBtn.onclick=ev=>{ev.stopPropagation();document.querySelectorAll('.co-palette.open').forEach(p=>{if(p!==pal)p.classList.remove('open');});pal.classList.toggle('open');};
+  ed.onclick=ev=>{ev.stopPropagation();toggleEditCallout(co);};
+  del.onclick=ev=>{ev.stopPropagation();deleteCallout(co);};
+  ctrl.appendChild(ed);ctrl.appendChild(colorBtn);ctrl.appendChild(del);co.appendChild(ctrl);co.appendChild(pal);
+  co.addEventListener('dragstart',e=>{
+    if(!body.classList.contains('editmode')||co.classList.contains('editing')){e.preventDefault();return;}
+    dragCid=co.dataset.cid;e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',dragCid);}catch(_){}
+    co.classList.add('dragging');
+  });
+  co.addEventListener('dragend',()=>{co.classList.remove('dragging');dragCid=null;document.querySelectorAll('.drop-hover').forEach(x=>x.classList.remove('drop-hover'));});
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.co-palette')&&!e.target.closest('.co-colbtn'))document.querySelectorAll('.co-palette.open').forEach(p=>p.classList.remove('open'));});
+function calloutParts(co){return [...co.children].filter(c=>!c.classList.contains('co-ctrl'));}
+function toggleEditCallout(co){
+  const editing=co.classList.toggle('editing');
+  const parts=calloutParts(co);
+  const edBtn=co.querySelector('.co-ctrl button');
+  parts.forEach(p=>{if(editing)p.setAttribute('contenteditable','true');else p.removeAttribute('contenteditable');});
+  co.draggable=editing?false:body.classList.contains('editmode');
+  if(editing){if(edBtn)edBtn.textContent='✓';(parts[0]||co).focus();}
+  else{if(edBtn)edBtn.textContent='✎';saveCallout(co);}
+  updateFmtbar();
+}
+function saveCallout(co){
+  const cid=co.dataset.cid;
+  const html=calloutParts(co).map(p=>p.outerHTML).join('');
+  if(cid&&cid[0]==='n'){const it=DB.calloutsAdded.find(x=>x.id===cid);if(it){it.html=html;persist();}}
+  else{DB.calloutEdits=DB.calloutEdits||{};DB.calloutEdits[cid]=html;persist();}
+}
+function deleteCallout(co){
+  if(!confirm('Supprimer cet encadré ?'))return;
+  const cid=co.dataset.cid;
+  if(cid&&cid[0]==='n')DB.calloutsAdded=DB.calloutsAdded.filter(x=>x.id!==cid);
+  else{DB.calloutDeleted=DB.calloutDeleted||[];if(!DB.calloutDeleted.includes(cid))DB.calloutDeleted.push(cid);}
+  if(DB.calloutParent)delete DB.calloutParent[cid];
+  if(DB.calloutColor)delete DB.calloutColor[cid];
+  persist();co.remove();updateFmtbar();
+}
+function parentElFor(key){
+  if(!key)return null;
+  if(key.indexOf('section:')===0)return document.getElementById(key.slice(8));
+  return fiche.querySelector('[data-cardid="'+key+'"]');
+}
+function placeCallout(co,key,sectionFallback){
+  const target=parentElFor(key);
+  if(target&&target.classList.contains('card')){target.appendChild(co);}
+  else{const sec=target||document.getElementById(sectionFallback)||fiche.querySelector('section');const bar=sec.querySelector('.addco');sec.insertBefore(co,bar);}
+}
+function renderAddedCallout(item){
+  const co=document.createElement('div');co.className=item.cls;co.dataset.cid=item.id;co.innerHTML=item.html;
+  injectCalloutControls(co);
+  const key=(DB.calloutParent&&DB.calloutParent[item.id])||('section:'+item.section);
+  placeCallout(co,key,item.section);
+  return co;
+}
+function addCallout(sectionId,type){
+  const id='n'+Date.now()+Math.floor(Math.random()*999);
+  const tag=type==='warn'?'Piège':type==='mnemo'?'Moyen mnémo':'À retenir';
+  const cls=type==='warn'?'callout warn':type==='mnemo'?'callout mnemo':'callout';
+  const html='<span class="tag">'+tag+'</span><p>Ton texte…</p>';
+  DB.calloutsAdded=DB.calloutsAdded||[];DB.calloutsAdded.push({id,section:sectionId,cls,html});persist();
+  const co=renderAddedCallout({id,section:sectionId,cls,html});
+  if(co){if(!body.classList.contains('editmode'))toggleEdit();co.draggable=true;toggleEditCallout(co);co.scrollIntoView({behavior:'smooth',block:'center'});toast("Encadré créé. Glisse-le dans la carte voulue, ou édite-le ici.");}
+}
+function addSectionToolbar(sec){
+  if(sec.querySelector('.addco'))return;
+  const bar=document.createElement('div');bar.className='addco';
+  [['+ À retenir','plain'],['+ Piège','warn'],['+ Mnémo','mnemo']].forEach(([label,type])=>{
+    const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>addCallout(sec.id,type);bar.appendChild(b);
+  });
+  sec.appendChild(bar);
+}
+function setupDropTargets(){
+  fiche.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('dragover',e=>{if(dragCid!==null&&body.classList.contains('editmode')){e.preventDefault();card.classList.add('drop-hover');}});
+    card.addEventListener('dragleave',()=>card.classList.remove('drop-hover'));
+    card.addEventListener('drop',e=>{
+      if(dragCid===null||!body.classList.contains('editmode'))return;
+      e.preventDefault();e.stopPropagation();card.classList.remove('drop-hover');
+      const co=fiche.querySelector('.callout[data-cid="'+dragCid+'"]');
+      if(co){card.appendChild(co);DB.calloutParent=DB.calloutParent||{};DB.calloutParent[dragCid]=card.dataset.cardid;persist();toast("Encadré déplacé dans la carte ✓");}
+    });
+  });
+  fiche.querySelectorAll('section').forEach(sec=>{
+    sec.addEventListener('dragover',e=>{if(dragCid!==null&&body.classList.contains('editmode'))e.preventDefault();});
+    sec.addEventListener('drop',e=>{
+      if(dragCid===null||!body.classList.contains('editmode'))return;
+      e.preventDefault();
+      const co=fiche.querySelector('.callout[data-cid="'+dragCid+'"]');
+      if(co){const bar=sec.querySelector('.addco');sec.insertBefore(co,bar);DB.calloutParent=DB.calloutParent||{};DB.calloutParent[dragCid]='section:'+sec.id;persist();toast("Encadré replacé en bas de section");}
+    });
+  });
+}
+function buildCallouts(){
+  indexCards();
+  [...fiche.querySelectorAll('.callout')].forEach((co,i)=>co.dataset.cid=String(i));
+  (DB.calloutDeleted||[]).forEach(cid=>{const co=fiche.querySelector('.callout[data-cid="'+cid+'"]');if(co)co.remove();});
+  if(DB.calloutEdits)Object.keys(DB.calloutEdits).forEach(cid=>{const co=fiche.querySelector('.callout[data-cid="'+cid+'"]');if(co)co.innerHTML=DB.calloutEdits[cid];});
+  fiche.querySelectorAll('.callout').forEach(injectCalloutControls);
+  fiche.querySelectorAll('section').forEach(addSectionToolbar);
+  (DB.calloutsAdded||[]).forEach(renderAddedCallout);
+  if(DB.calloutParent)Object.keys(DB.calloutParent).forEach(cid=>{const co=fiche.querySelector('.callout[data-cid="'+cid+'"]');if(co)placeCallout(co,DB.calloutParent[cid],null);});
+  if(DB.calloutColor)Object.keys(DB.calloutColor).forEach(cid=>{const co=fiche.querySelector('.callout[data-cid="'+cid+'"]');if(co)co.dataset.color=DB.calloutColor[cid];});
+  setupDropTargets();
+}
+
+/* ============ BARRE DE MISE EN FORME ============ */
+const fmtbar=document.getElementById('fmtbar');
+function updateFmtbar(){const any=!!fiche.querySelector('.callout.editing');fmtbar.classList.toggle('on',any);}
+function exec(cmd,val){document.execCommand('styleWithCSS',false,true);return document.execCommand(cmd,false,val||null);}
+fmtbar.querySelectorAll('[data-cmd]').forEach(b=>b.addEventListener('mousedown',e=>{e.preventDefault();exec(b.dataset.cmd);}));
+fmtbar.querySelectorAll('[data-fore]').forEach(b=>{b.style.background=b.dataset.fore;b.addEventListener('mousedown',e=>{e.preventDefault();exec('foreColor',b.dataset.fore);});});
+fmtbar.querySelectorAll('[data-hl]').forEach(b=>{b.style.background=b.dataset.hl;b.addEventListener('mousedown',e=>{e.preventDefault();if(!exec('hiliteColor',b.dataset.hl))exec('backColor',b.dataset.hl);});});
+
+/* ============ NOTES LIBRES ============ */
+const notesArea=document.getElementById('notesArea');
+notesArea.value=DB.notes||'';
+let nT;notesArea.addEventListener('input',()=>{clearTimeout(nT);nT=setTimeout(()=>{DB.notes=notesArea.value;persist();},400);});
+
+/* ============ INIT ============ */
+if(!DB._seeded){if(!DB.cards.length)DB.cards=DEFAULT_CARDS.map(c=>({...c}));DB._seeded=true;persist();}
+persist();
+(function syncCarnetToGlobal(){
+  let changed=false;
+  DB.carnet.forEach(entry=>{if(!entry.id){entry.id=uid();changed=true;}});
+  if(changed)persist();
+  const g=loadGlobalCarnet();
+  const existing=new Set(g.filter(e=>e.itemNum===ITEM_NUM).map(e=>e.id));
+  DB.carnet.forEach(entry=>{if(!existing.has(entry.id))pushToGlobalCarnet(entry);});
+})();
+syncCardsToGlobal();
+indexStarrables();restoreStars();buildCallouts();captureOriginals();applyCardEdits();buildCardEditing();restoreTrous();renderCard();renderCarnet();
+</script>
+</body>
+</html>
