@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnet d'erreur · Fiches 101</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231C1B19'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='34' font-weight='700' fill='%23FAFAF7' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2EFE9; --card:#FFFFFF; --ink:#1C1B19; --ink-soft:#52504B; --ink-faint:#8A877F;
+    --line:#EAE7DF; --line-strong:#DDD9CF;
+    --gray:#7A766E; --gray-bg:#EFEDE6;
+    --radius:16px; --shadow:0 1px 4px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);
+  }
+  [data-theme="dark"]{
+    --bg:#15140F; --card:#201F1A; --ink:#ECEAE3; --ink-soft:#B7B4AB; --ink-faint:#827F77;
+    --line:#322F28; --line-strong:#403D34;
+    --gray:#9A968D; --gray-bg:#2B2A24;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;font-size:15px;transition:background .25s,color .25s;
+    min-height:100vh;}
+
+  .hero{max-width:1040px;margin:0 auto;padding:30px 24px 8px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .hero-left{display:flex;align-items:center;gap:14px;}
+  .back{color:var(--ink-soft);text-decoration:none;font-size:14px;font-weight:600;display:flex;align-items:center;gap:5px;transition:.15s;}
+  .back:hover{color:var(--ink);}
+  .hero-title{font-family:"Playfair Display",serif;font-size:28px;font-weight:700;}
+  .theme-toggle{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);width:38px;height:38px;
+    border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;
+    box-shadow:var(--shadow);transition:.15s;}
+  .theme-toggle:hover{border-color:var(--line-strong);}
+
+  .controlbar{max-width:1040px;margin:0 auto;padding:18px 24px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:10px 14px;box-shadow:var(--shadow);}
+  .search input{border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);width:100%;font-family:inherit;}
+  .search input::placeholder{color:var(--ink-faint);}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);font-size:12.5px;font-weight:600;
+    padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .chip:hover{border-color:var(--line-strong);}
+  .chip.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+
+  .count{max-width:1040px;margin:0 auto;padding:14px 24px 0;font-size:12.5px;color:var(--ink-faint);}
+
+  .list{max-width:1040px;margin:0 auto;padding:14px 24px 70px;display:flex;flex-direction:column;gap:12px;}
+  .entry{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;}
+  .entry-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+  .src{display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+  .src-num{width:30px;height:30px;border-radius:9px;background:var(--gray-bg);color:var(--ink-soft);display:flex;
+    align-items:center;justify-content:center;font-size:12.5px;font-weight:600;flex-shrink:0;}
+  .src-title{font-size:13.5px;font-weight:700;color:var(--ink);}
+  .src-title:hover{color:var(--ink-soft);}
+  .date{font-size:11.5px;color:var(--ink-faint);}
+  .body{font-size:14px;color:var(--ink-soft);white-space:pre-wrap;line-height:1.6;}
+  .imgs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .imgs img{width:84px;height:84px;object-fit:cover;border-radius:9px;border:1px solid var(--line);cursor:pointer;}
+
+  .empty{text-align:center;color:var(--ink-faint);padding:70px 20px;font-size:14px;}
+
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px;}
+  .lightbox.on{display:flex;}
+  .lightbox img{max-width:92vw;max-height:92vh;border-radius:10px;}
+
+  footer{text-align:center;padding:6px 20px 40px;color:#C5BFB6;font-size:15px;font-family:"Playfair Display",serif;font-style:italic;}
+  [data-theme="dark"] footer{color:#5A564D;}
+
+  @media(max-width:700px){
+    .hero{flex-direction:column;align-items:flex-start;gap:10px;}
+    .hero-title{font-size:23px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-left">
+    <a href="index.html" class="back">← Index</a>
+    <div class="hero-title">Carnet d'erreur</div>
+  </div>
+  <button class="theme-toggle" id="themeBtn" title="Mode sombre">🌙</button>
+</div>
+
+<div class="controlbar">
+  <div class="search">🔍 <input id="searchInput" placeholder="Rechercher dans tes erreurs…" autocomplete="off"></div>
+</div>
+<div class="controlbar" style="padding-top:10px;">
+  <div class="chips" id="chips"></div>
+</div>
+<div class="count" id="countLbl"></div>
+
+<div class="list" id="list"></div>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" src=""></div>
+
+<footer></footer>
+
+<script>
+  /* ============================================================
+     RÉFÉRENCE DES FICHES (pour retrouver titre/lien depuis un numéro d'item)
+     Claude maintient cette liste à jour automatiquement, en cohérence avec index.html
+     ============================================================ */
+  const FICHES = [
+    {file:"item-45-specificites-maladies-genetiques.html", num:45, title:"Spécificités des maladies génétiques", specs:["Génétique médicale","Pédiatrie"]},
+  ];
+  const FICHE_BY_NUM={};FICHES.forEach(f=>FICHE_BY_NUM[f.num]=f);
+
+  const themeBtn=document.getElementById('themeBtn');
+  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
+  let theme='light';
+  try{theme=localStorage.getItem('edn-index-theme')||'light';}catch(e){}
+  applyTheme(theme);
+  themeBtn.onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme(theme);try{localStorage.setItem('edn-index-theme',theme);}catch(e){}};
+
+  function loadGlobalCarnet(){try{return JSON.parse(localStorage.getItem('carnet-global'))||[];}catch(e){return [];}}
+
+  const list=document.getElementById('list');
+  const chipsEl=document.getElementById('chips');
+  const searchInput=document.getElementById('searchInput');
+  const countLbl=document.getElementById('countLbl');
+  const lightbox=document.getElementById('lightbox'),lightboxImg=document.getElementById('lightboxImg');
+  function openLightbox(src){lightboxImg.src=src;lightbox.classList.add('on');}
+  lightbox.onclick=()=>lightbox.classList.remove('on');
+
+  let activeNum=null;
+  const ALL=loadGlobalCarnet();
+  const usedNums=[...new Set(ALL.map(e=>e.itemNum))].sort((a,b)=>a-b);
+
+  function renderChips(){
+    chipsEl.innerHTML='';
+    const all=document.createElement('button');all.className='chip'+(activeNum===null?' active':'');all.textContent='Tous les items';
+    all.onclick=()=>{activeNum=null;renderChips();renderList();};
+    chipsEl.appendChild(all);
+    usedNums.forEach(num=>{
+      const f=FICHE_BY_NUM[num];
+      const label='Item '+num+(f?' · '+f.title:'');
+      const c=document.createElement('button');c.className='chip'+(activeNum===num?' active':'');c.textContent=label;
+      c.onclick=()=>{activeNum=activeNum===num?null:num;renderChips();renderList();};
+      chipsEl.appendChild(c);
+    });
+  }
+
+  function renderList(){
+    const q=searchInput.value.trim().toLowerCase();
+    const filtered=ALL.filter(e=>{
+      if(activeNum!==null&&e.itemNum!==activeNum)return false;
+      if(!q)return true;
+      const hay=(e.itemNum+" "+(e.itemTitle||'')+" "+(e.text||'')).toLowerCase();
+      return hay.includes(q);
+    }).sort((a,b)=>{
+      const ta=a.date||'',tb=b.date||'';
+      return tb.localeCompare(ta); // approximatif, surtout utile si dates identiques en format FR
+    });
+
+    countLbl.textContent=filtered.length+(filtered.length===1?' entrée':' entrées');
+    list.innerHTML='';
+    if(!filtered.length){
+      list.innerHTML='<div class="empty">Aucune entrée ne correspond. Ton carnet se remplit au fil de tes fiches.</div>';
+      return;
+    }
+    filtered.forEach(entry=>{
+      const f=FICHE_BY_NUM[entry.itemNum];
+      const e=document.createElement('div');e.className='entry';
+      const top=document.createElement('div');top.className='entry-top';
+      const src=document.createElement('a');src.className='src';
+      src.href=f?encodeURI(f.file):'#';
+      src.innerHTML=`<span class="src-num">${entry.itemNum}</span><span class="src-title">${entry.itemTitle||('Item '+entry.itemNum)}</span>`;
+      const date=document.createElement('span');date.className='date';date.textContent=entry.date||'';
+      top.appendChild(src);top.appendChild(date);
+      e.appendChild(top);
+      if(entry.text){const b=document.createElement('div');b.className='body';b.textContent=entry.text;e.appendChild(b);}
+      if(entry.imgs&&entry.imgs.length){const wrap=document.createElement('div');wrap.className='imgs';
+        entry.imgs.forEach(src=>{const im=document.createElement('img');im.src=src;im.onclick=()=>openLightbox(src);wrap.appendChild(im);});e.appendChild(wrap);}
+      list.appendChild(e);
+    });
+  }
+
+  searchInput.addEventListener('input',renderList);
+  renderChips();renderList();
+</script>
+</body>
+</html>
