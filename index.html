@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnet d'erreur — EDN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2EFE9; --card:#FFFFFF; --ink:#1C1B19; --ink-soft:#52504B; --ink-faint:#8A877F;
+  --line:#EAE7DF; --line-strong:#DDD9CF;
+  --gray:#7A766E; --gray-bg:#EFEDE6;
+  --shadow:0 1px 4px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);
+}
+[data-theme="dark"]{
+  --bg:#15140F; --card:#201F1A; --ink:#ECEAE3; --ink-soft:#B7B4AB; --ink-faint:#827F77;
+  --line:#322F28; --line-strong:#403D34;
+  --gray:#9A968D; --gray-bg:#2B2A24;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; transition:background .2s,color .2s;
+}
+.wrap{max-width:920px; margin:0 auto; padding:36px 24px 80px;}
+
+/* ===== Header ===== */
+header{display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:28px;}
+.htitle{font-family:"Playfair Display",serif; font-size:32px; font-weight:700; margin:0 0 4px;}
+.hsub{color:var(--ink-soft); font-size:14px; margin:0;}
+.theme-btn{
+  width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--card);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; flex-shrink:0;
+}
+.theme-btn:hover{background:var(--gray-bg);}
+
+/* ===== Stats strip ===== */
+.stats{display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap;}
+.stat{
+  flex:1; min-width:120px; background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:14px 16px; box-shadow:var(--shadow);
+}
+.stat-num{font-family:"Playfair Display",serif; font-size:24px; font-weight:700; color:var(--ink);}
+.stat-label{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+
+/* ===== Toolbar ===== */
+.toolbar{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px;
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:var(--shadow);
+}
+.search-box{
+  flex:1; min-width:180px; display:flex; align-items:center; gap:8px;
+  background:var(--gray-bg); border-radius:10px; padding:8px 12px;
+}
+.search-box input{
+  border:none; outline:none; background:transparent; font-size:14px; color:var(--ink); width:100%; font-family:inherit;
+}
+select{
+  font-family:inherit; font-size:13px; color:var(--ink); background:var(--gray-bg); border:none; border-radius:10px;
+  padding:8px 10px; cursor:pointer; outline:none;
+}
+.btn{
+  font-family:inherit; font-size:13px; font-weight:600; border:none; border-radius:10px; padding:9px 16px;
+  cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:opacity .15s;
+}
+.btn:hover{opacity:.85;}
+.btn-primary{background:var(--ink); color:#fff;}
+.btn-secondary{background:var(--gray-bg); color:var(--ink);}
+.btn-anki{background:var(--ink-soft); color:#fff;}
+
+/* ===== Filter chips ===== */
+.chiprow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;}
+.chip{
+  font-size:12px; padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line);
+  color:var(--ink-soft); cursor:pointer; user-select:none;
+}
+.chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+/* ===== Entry list ===== */
+.entry{
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.entry.is-priority{border:1.5px solid var(--ink);}
+.entry-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px;}
+.entry-tags{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{font-size:11px; padding:3px 9px; border-radius:999px; font-weight:600; border:1px solid transparent;}
+.tag-item{background:var(--ink); color:var(--bg);}
+.tag-spec{background:var(--gray-bg); color:var(--ink); border-color:var(--line-strong);}
+.tag-custom{background:transparent; color:var(--ink-faint); border-color:var(--line-strong);}
+.tag-annales{background:transparent; color:var(--ink-soft); border-color:var(--ink-soft); font-style:italic;}
+.tag-priority{background:var(--ink); color:var(--bg); border-color:var(--ink); font-weight:800; letter-spacing:.02em;}
+.entry-date{font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+.entry-q{font-size:15px; line-height:1.5; margin:0 0 8px; font-weight:600;}
+.entry-a{font-size:14px; line-height:1.6; color:var(--ink-soft); margin:0; white-space:pre-wrap;}
+.entry-a-label{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); font-weight:700; margin-bottom:4px; display:block;}
+.entry-img{max-width:100%; max-height:280px; border-radius:10px; margin-top:10px; display:block; border:1px solid var(--line); cursor:zoom-in;}
+.entry-actions{display:flex; gap:6px; margin-top:12px;}
+.icon-btn{
+  width:28px; height:28px; border-radius:8px; border:none; background:var(--gray-bg); color:var(--ink-soft);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px;
+}
+.icon-btn:hover{background:var(--line);}
+
+/* ===== Quick tag toggle (Annales) ===== */
+.quick-tags{display:flex; gap:8px; margin-bottom:14px;}
+.quick-tag-chip{
+  font-size:13px; padding:7px 14px; border-radius:999px; border:1.5px solid var(--ink-soft);
+  background:var(--card); color:var(--ink-soft); cursor:pointer; font-weight:600; user-select:none;
+  transition:background .15s,color .15s;
+}
+.quick-tag-chip.on{background:var(--ink-soft); color:#fff;}
+
+/* ===== Image upload ===== */
+.img-upload{
+  border:1.5px dashed var(--line); border-radius:10px; padding:14px; text-align:center; cursor:pointer;
+  font-size:13px; color:var(--ink-soft); background:var(--gray-bg);
+}
+.img-upload:hover{border-color:var(--ink);}
+.img-preview-wrap{position:relative; margin-top:10px; display:inline-block;}
+.img-preview{max-width:100%; max-height:160px; border-radius:10px; display:block; border:1px solid var(--line);}
+.img-remove{
+  position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; border:none;
+  background:rgba(20,18,14,.7); color:#fff; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center;
+}
+
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed; inset:0; background:rgba(10,9,6,.85); display:none; align-items:center; justify-content:center;
+  padding:30px; z-index:200; cursor:zoom-out;
+}
+.lightbox.show{display:flex;}
+.lightbox img{max-width:100%; max-height:100%; border-radius:8px;}
+
+.empty{text-align:center; padding:60px 20px; color:var(--ink-soft);}
+.empty-icon{font-size:40px; margin-bottom:12px; opacity:.5;}
+
+/* ===== Modal ===== */
+.overlay{
+  position:fixed; inset:0; background:rgba(20,18,14,.5); display:none; align-items:center; justify-content:center;
+  padding:20px; z-index:100;
+}
+.overlay.show{display:flex;}
+.modal{
+  background:var(--card); border-radius:16px; padding:28px; max-width:540px; width:100%;
+  max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+.modal h2{font-family:"Playfair Display",serif; font-size:22px; margin:0 0 18px;}
+.field{margin-bottom:14px;}
+.field label{font-size:12px; font-weight:700; color:var(--ink-soft); display:block; margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;}
+.field input, .field textarea{
+  width:100%; font-family:inherit; font-size:14px; color:var(--ink); background:var(--gray-bg);
+  border:1px solid transparent; border-radius:10px; padding:10px 12px; outline:none; resize:vertical;
+}
+.field input:focus, .field textarea:focus{border-color:var(--ink);}
+.field-row{display:flex; gap:10px;}
+.field-row .field{flex:1;}
+.modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:20px;}
+
+/* ===== Anki modal ===== */
+.anki-info{font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:14px;}
+.anki-preview{
+  background:var(--gray-bg); border-radius:10px; padding:12px; font-size:12px; font-family:monospace;
+  max-height:160px; overflow-y:auto; white-space:pre-wrap; margin-bottom:14px; color:var(--ink-soft);
+}
+
+@media (max-width:600px){
+  .field-row{flex-direction:column;}
+  .stats{flex-direction:column;}
+}
+.quote{font-family:"Playfair Display",serif; font-style:italic; font-size:14px; color:var(--ink-faint); margin:2px 0 10px;}
+.header-actions{display:flex; gap:8px; flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 class="htitle">Carnet d'erreur</h1>
+      <p class="quote">"A person who never made a mistake never tried anything new."</p>
+      <p class="hsub">Toutes tes erreurs, filtrables par item et par matière.</p>
+    </div>
+    <div class="header-actions">
+      <button class="theme-btn" id="exportJsonBtn" title="Sauvegarder (export JSON)">💾</button>
+      <button class="theme-btn" id="themeBtn" title="Mode sombre">🌙</button>
+    </div>
+  </header>
+
+  <div class="stats" id="statsRow"></div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Rechercher dans le texte...">
+    </div>
+    <select id="sortSelect">
+      <option value="date-desc">Plus récent</option>
+      <option value="date-asc">Plus ancien</option>
+      <option value="item">Par item</option>
+      <option value="spec">Par matière</option>
+    </select>
+    <button class="btn btn-secondary" id="exportAnkiBtn">📤 Exporter vers Anki</button>
+    <button class="btn btn-primary" id="addBtn">+ Ajouter une erreur</button>
+  </div>
+
+  <div class="chiprow" id="specChips"></div>
+  <div class="chiprow" id="itemChips"></div>
+
+  <div id="entryList"></div>
+</div>
+
+
+<!-- Add/Edit modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Nouvelle erreur</h2>
+    <div class="field-row">
+      <div class="field">
+        <label>Numéro d'item</label>
+        <input type="text" id="fItemNum" placeholder="ex: 238">
+      </div>
+      <div class="field">
+        <label>Titre de l'item</label>
+        <input type="text" id="fItemTitle" placeholder="ex: Souffle cardiaque de l'enfant">
+      </div>
+    </div>
+    <div class="field">
+      <label>Spécialité(s)</label>
+      <input type="text" id="fSpec" placeholder="ex: Cardiologie, Pédiatrie (séparées par des virgules)">
+    </div>
+    <div class="field">
+      <label>Question / erreur commise</label>
+      <textarea id="fQuestion" rows="3" placeholder="Ce que tu as mal répondu ou mal compris..."></textarea>
+    </div>
+    <div class="field">
+      <label>Correction / explication</label>
+      <textarea id="fAnswer" rows="4" placeholder="La bonne réponse, l'explication à retenir..."></textarea>
+    </div>
+    <div class="field">
+      <label>Tags additionnels (optionnel)</label>
+      <input type="text" id="fTags" placeholder="ex: piège classique, à revoir (séparés par des virgules)">
+    </div>
+    <div class="quick-tags">
+      <span class="quick-tag-chip" id="annalesChip">📚 Annales</span>
+      <span class="quick-tag-chip" id="priorityChip">+++</span>
+    </div>
+    <div class="field">
+      <label>Image (optionnel)</label>
+      <div class="img-upload" id="imgUploadZone">+ Ajouter une image (capture d'écran, photo d'une question...)</div>
+      <input type="file" id="fImageInput" accept="image/*" style="display:none;">
+      <div id="imgPreviewContainer"></div>
+      <p style="font-size:11px;color:var(--ink-soft);margin:6px 0 0;">L'image reste uniquement dans le carnet — elle n'est jamais incluse dans l'export Anki.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="cancelBtn">Annuler</button>
+      <button class="btn btn-primary" id="saveBtn">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Anki export modal -->
+<div class="overlay" id="ankiOverlay">
+  <div class="modal">
+    <h2>Exporter vers Anki</h2>
+    <p class="anki-info">
+      Le fichier exporté est un .txt séparé par tabulations (Front / Back / Tags), au format attendu par Anki.
+      <b>Les images ne sont jamais incluses</b> — seul le texte (question et correction) est exporté.<br><br>
+      Dans Anki : <b>Fichier → Importer</b>, sélectionne le fichier, et vérifie que le séparateur de champs est bien "Tabulation" et que la case "Le premier champ contient les tags" n'est pas cochée (les tags sont dans une colonne dédiée).
+    </p>
+    <div class="anki-preview" id="ankiPreview"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="ankiCancelBtn">Fermer</button>
+      <button class="btn btn-anki" id="ankiDownloadBtn">⬇ Télécharger le .txt</button>
+    </div>
+  </div>
+</div>
+
+<!-- Image lightbox -->
+<div class="lightbox" id="lightbox">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+const STORAGE_KEY = 'carnet-erreur-edn-v1';
+const THEME_KEY = 'carnet-erreur-theme';
+
+let entries = [];
+let editingId = null;
+let activeSpecFilter = null;
+let activeItemFilter = null;
+let activeTagFilter = null;
+let currentImage = null; // base64 string or null
+let annalesActive = false;
+let priorityActive = false;
+
+// ---------- Persistence ----------
+function loadEntries(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    entries = raw ? JSON.parse(raw) : [];
+  }catch(e){ entries = []; }
+}
+function saveEntries(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+// ---------- JSON export (backup / save) ----------
+document.getElementById('exportJsonBtn').addEventListener('click', () => {
+  if(entries.length === 0){
+    alert('Ton carnet est vide, rien à sauvegarder.');
+    return;
+  }
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const today = new Date().toISOString().slice(0,10);
+  a.download = `carnet-erreur-sauvegarde-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ---------- Theme ----------
+function initTheme(){
+  const saved = localStorage.getItem(THEME_KEY);
+  if(saved === 'dark'){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+}
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if(isDark){
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem(THEME_KEY, 'light');
+    document.getElementById('themeBtn').textContent = '🌙';
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem(THEME_KEY, 'dark');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+});
+
+// ---------- Helpers ----------
+function uid(){ return 'e' + Date.now() + Math.random().toString(36).slice(2,8); }
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function formatDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+}
+function parseTags(str){
+  return (str||'').split(',').map(s => s.trim()).filter(Boolean);
+}
+
+// ---------- Image upload ----------
+function renderImgPreview(){
+  const container = document.getElementById('imgPreviewContainer');
+  if(currentImage){
+    container.innerHTML = `
+      <div class="img-preview-wrap">
+        <img class="img-preview" src="${currentImage}" alt="Aperçu">
+        <button class="img-remove" id="imgRemoveBtn" title="Retirer l'image">✕</button>
+      </div>`;
+    document.getElementById('imgRemoveBtn').addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      currentImage = null;
+      renderImgPreview();
+    });
+  } else {
+    container.innerHTML = '';
+  }
+}
+document.getElementById('imgUploadZone').addEventListener('click', () => {
+  document.getElementById('fImageInput').click();
+});
+document.getElementById('fImageInput').addEventListener('change', (ev) => {
+  const file = ev.target.files[0];
+  if(!file) return;
+  if(file.size > 4 * 1024 * 1024){
+    alert('Image trop volumineuse (max 4 Mo).');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentImage = e.target.result;
+    renderImgPreview();
+  };
+  reader.readAsDataURL(file);
+  ev.target.value = '';
+});
+
+// ---------- Annales quick tag ----------
+document.getElementById('annalesChip').addEventListener('click', () => {
+  annalesActive = !annalesActive;
+  document.getElementById('annalesChip').classList.toggle('on', annalesActive);
+});
+
+// ---------- Priority quick tag ----------
+document.getElementById('priorityChip').addEventListener('click', () => {
+  priorityActive = !priorityActive;
+  document.getElementById('priorityChip').classList.toggle('on', priorityActive);
+});
+
+// ---------- Lightbox ----------
+function openLightbox(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+document.getElementById('lightbox').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('show');
+});
+
+// ---------- Stats ----------
+function renderStats(){
+  const total = entries.length;
+  const specs = new Set();
+  const items = new Set();
+  entries.forEach(e => {
+    parseTags(e.spec).forEach(s => specs.add(s));
+    if(e.itemNum) items.add(e.itemNum);
+  });
+  const statsRow = document.getElementById('statsRow');
+  statsRow.innerHTML = `
+    <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">erreur${total===1?'':'s'} au total</div></div>
+    <div class="stat"><div class="stat-num">${items.size}</div><div class="stat-label">item${items.size===1?'':'s'} concerné${items.size===1?'':'s'}</div></div>
+    <div class="stat"><div class="stat-num">${specs.size}</div><div class="stat-label">matière${specs.size===1?'':'s'}</div></div>
+  `;
+}
+
+// ---------- Chips (filters) ----------
+function renderChips(){
+  const specCount = {};
+  const itemCount = {};
+  entries.forEach(e => {
+    parseTags(e.spec).forEach(s => { specCount[s] = (specCount[s]||0) + 1; });
+    if(e.itemNum){
+      const key = e.itemNum + (e.itemTitle ? ' — ' + e.itemTitle : '');
+      itemCount[key] = (itemCount[key]||0) + 1;
+    }
+  });
+
+  const specChips = document.getElementById('specChips');
+  specChips.innerHTML = '';
+  const allChip = document.createElement('span');
+  allChip.className = 'chip' + (activeSpecFilter===null && activeTagFilter===null ? ' active':'');
+  allChip.textContent = 'Toutes matières';
+  allChip.onclick = () => { activeSpecFilter = null; activeTagFilter = null; renderChips(); renderList(); };
+  specChips.appendChild(allChip);
+
+  const priorityCount = entries.filter(e => e.priority).length;
+  if(priorityCount > 0){
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (activeTagFilter==='priority' ? ' active':'');
+    chip.textContent = `+++ (${priorityCount})`;
+    chip.onclick = () => { activeTagFilter = (activeTagFilter==='priority' ? null : 'priority'); renderChips(); renderList(); };
+    specChips.appendChild(chip);
+  }
+
+  const annalesCount = entries.filter(e => e.annales).length;
+  if(annalesCount > 0){
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (activeTagFilter==='annales' ? ' active':'');
+    chip.textContent = `📚 Annales (${annalesCount})`;
+    chip.onclick = () => { activeTagFilter = (activeTagFilter==='annales' ? null : 'annales'); renderChips(); renderList(); };
+    specChips.appendChild(chip);
+  }
+
+  Object.keys(specCount).sort().forEach(s => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (activeSpecFilter===s ? ' active':'');
+    chip.textContent = `${s} (${specCount[s]})`;
+    chip.onclick = () => { activeSpecFilter = (activeSpecFilter===s ? null : s); renderChips(); renderList(); };
+    specChips.appendChild(chip);
+  });
+
+  const itemChips = document.getElementById('itemChips');
+  itemChips.innerHTML = '';
+  if(Object.keys(itemCount).length){
+    const allChip = document.createElement('span');
+    allChip.className = 'chip' + (activeItemFilter===null ? ' active':'');
+    allChip.textContent = 'Tous les items';
+    allChip.onclick = () => { activeItemFilter = null; renderChips(); renderList(); };
+    itemChips.appendChild(allChip);
+    Object.keys(itemCount).sort().forEach(key => {
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (activeItemFilter===key ? ' active':'');
+      chip.textContent = `${key} (${itemCount[key]})`;
+      chip.onclick = () => { activeItemFilter = (activeItemFilter===key ? null : key); renderChips(); renderList(); };
+      itemChips.appendChild(chip);
+    });
+  }
+}
+
+// ---------- List rendering ----------
+function getFilteredSorted(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const sortVal = document.getElementById('sortSelect').value;
+
+  let list = entries.filter(e => {
+    if(activeSpecFilter && !parseTags(e.spec).includes(activeSpecFilter)) return false;
+    if(activeItemFilter){
+      const key = e.itemNum + (e.itemTitle ? ' — ' + e.itemTitle : '');
+      if(key !== activeItemFilter) return false;
+    }
+    if(activeTagFilter === 'annales' && !e.annales) return false;
+    if(activeTagFilter === 'priority' && !e.priority) return false;
+    if(q){
+      const hay = [e.question, e.answer, e.itemNum, e.itemTitle, e.spec, e.tags].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  list.sort((a,b) => {
+    if(sortVal === 'date-desc') return new Date(b.date) - new Date(a.date);
+    if(sortVal === 'date-asc') return new Date(a.date) - new Date(b.date);
+    if(sortVal === 'item') return (a.itemNum||'').localeCompare(b.itemNum||'', undefined, {numeric:true});
+    if(sortVal === 'spec') return (a.spec||'').localeCompare(b.spec||'');
+    return 0;
+  });
+
+  return list;
+}
+
+function renderList(){
+  const list = getFilteredSorted();
+  const container = document.getElementById('entryList');
+
+  if(entries.length === 0){
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📖</div>
+        <p>Ton carnet est vide pour l'instant.<br>Ajoute ta première erreur pour commencer à la suivre.</p>
+      </div>`;
+    return;
+  }
+  if(list.length === 0){
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔍</div>
+        <p>Aucune erreur ne correspond à ces filtres.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = list.map(e => {
+    const specTags = parseTags(e.spec).map(s => `<span class="tag tag-spec">${escapeHtml(s)}</span>`).join('');
+    const itemTag = e.itemNum ? `<span class="tag tag-item">Item ${escapeHtml(e.itemNum)}${e.itemTitle ? ' · ' + escapeHtml(e.itemTitle) : ''}</span>` : '';
+    const customTags = parseTags(e.tags).map(t => `<span class="tag tag-custom">${escapeHtml(t)}</span>`).join('');
+    const annalesTag = e.annales ? `<span class="tag tag-annales">📚 Annales</span>` : '';
+    const priorityTag = e.priority ? `<span class="tag tag-priority">+++ à revoir</span>` : '';
+    const imgHtml = e.image ? `<img class="entry-img" src="${e.image}" alt="Image de l'erreur" data-fullsrc="${e.image}">` : '';
+    return `
+      <div class="entry${e.priority ? ' is-priority' : ''}" data-id="${e.id}">
+        <div class="entry-head">
+          <div class="entry-tags">${priorityTag}${itemTag}${specTags}${annalesTag}${customTags}</div>
+          <div class="entry-date">${formatDate(e.date)}</div>
+        </div>
+        <p class="entry-q">${escapeHtml(e.question)}</p>
+        <span class="entry-a-label">Correction</span>
+        <p class="entry-a">${escapeHtml(e.answer)}</p>
+        ${imgHtml}
+        <div class="entry-actions">
+          <button class="icon-btn edit-btn" title="Modifier">✎</button>
+          <button class="icon-btn del-btn" title="Supprimer">🗑</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('.entry-img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.dataset.fullsrc));
+  });
+  container.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      const id = ev.currentTarget.closest('.entry').dataset.id;
+      openModal(id);
+    });
+  });
+  container.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      const id = ev.currentTarget.closest('.entry').dataset.id;
+      if(confirm('Supprimer cette erreur ?')){
+        entries = entries.filter(e => String(e.id) !== String(id));
+        saveEntries();
+        renderAll();
+      }
+    });
+  });
+}
+
+function renderAll(){
+  renderStats();
+  renderChips();
+  renderList();
+}
+
+// ---------- Modal (add/edit) ----------
+function openModal(id){
+  editingId = id || null;
+  const modalTitle = document.getElementById('modalTitle');
+  if(id){
+    const e = entries.find(x => x.id === id);
+    modalTitle.textContent = 'Modifier l\'erreur';
+    document.getElementById('fItemNum').value = e.itemNum || '';
+    document.getElementById('fItemTitle').value = e.itemTitle || '';
+    document.getElementById('fSpec').value = e.spec || '';
+    document.getElementById('fQuestion').value = e.question || '';
+    document.getElementById('fAnswer').value = e.answer || '';
+    document.getElementById('fTags').value = e.tags || '';
+    currentImage = e.image || null;
+    annalesActive = !!e.annales;
+    priorityActive = !!e.priority;
+  } else {
+    modalTitle.textContent = 'Nouvelle erreur';
+    ['fItemNum','fItemTitle','fSpec','fQuestion','fAnswer','fTags'].forEach(id => document.getElementById(id).value = '');
+    currentImage = null;
+    annalesActive = false;
+    priorityActive = false;
+  }
+  document.getElementById('annalesChip').classList.toggle('on', annalesActive);
+  document.getElementById('priorityChip').classList.toggle('on', priorityActive);
+  renderImgPreview();
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('fItemNum').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('show');
+  editingId = null;
+  currentImage = null;
+  annalesActive = false;
+  priorityActive = false;
+}
+
+document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', (ev) => {
+  if(ev.target.id === 'overlay') closeModal();
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const question = document.getElementById('fQuestion').value.trim();
+  const answer = document.getElementById('fAnswer').value.trim();
+  if(!question || !answer){
+    alert('Merci de remplir au moins la question et la correction.');
+    return;
+  }
+  const data = {
+    itemNum: document.getElementById('fItemNum').value.trim(),
+    itemTitle: document.getElementById('fItemTitle').value.trim(),
+    spec: document.getElementById('fSpec').value.trim(),
+    question, answer,
+    tags: document.getElementById('fTags').value.trim(),
+    image: currentImage || null,
+    annales: annalesActive,
+    priority: priorityActive,
+  };
+  if(editingId){
+    const idx = entries.findIndex(e => e.id === editingId);
+    entries[idx] = { ...entries[idx], ...data };
+  } else {
+    entries.push({ id: uid(), date: new Date().toISOString(), ...data });
+  }
+  saveEntries();
+  closeModal();
+  renderAll();
+});
+
+// ---------- Search / sort ----------
+document.getElementById('searchInput').addEventListener('input', renderList);
+document.getElementById('sortSelect').addEventListener('change', renderList);
+
+// ---------- Anki export ----------
+function buildAnkiTSV(){
+  const list = getFilteredSorted();
+  const rows = list.map(e => {
+    const front = (e.question||'').replace(/\t/g,' ').replace(/\n/g,'<br>');
+    const back = (e.answer||'').replace(/\t/g,' ').replace(/\n/g,'<br>');
+    const tagParts = [];
+    if(e.itemNum) tagParts.push('item::' + e.itemNum.replace(/\s+/g,'_'));
+    parseTags(e.spec).forEach(s => tagParts.push('matiere::' + s.replace(/\s+/g,'_')));
+    if(e.annales) tagParts.push('annales');
+    if(e.priority) tagParts.push('a_revoir');
+    parseTags(e.tags).forEach(t => tagParts.push(t.replace(/\s+/g,'_')));
+    const tagStr = tagParts.join(' ');
+    return `${front}\t${back}\t${tagStr}`;
+  });
+  return rows.join('\n');
+}
+
+document.getElementById('exportAnkiBtn').addEventListener('click', () => {
+  if(entries.length === 0){
+    alert('Ton carnet est vide, rien à exporter.');
+    return;
+  }
+  const tsv = buildAnkiTSV();
+  document.getElementById('ankiPreview').textContent = tsv.split('\n').slice(0,8).join('\n') + (tsv.split('\n').length > 8 ? '\n...' : '');
+  document.getElementById('ankiOverlay').classList.add('show');
+});
+document.getElementById('ankiCancelBtn').addEventListener('click', () => {
+  document.getElementById('ankiOverlay').classList.remove('show');
+});
+document.getElementById('ankiOverlay').addEventListener('click', (ev) => {
+  if(ev.target.id === 'ankiOverlay') document.getElementById('ankiOverlay').classList.remove('show');
+});
+document.getElementById('ankiDownloadBtn').addEventListener('click', () => {
+  const tsv = buildAnkiTSV();
+  const header = '#separator:tab\n#html:true\n#tags column:3\n';
+  const blob = new Blob([header + tsv], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const today = new Date().toISOString().slice(0,10);
+  a.download = `carnet-erreur-anki-${today}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ---------- Init ----------
+initTheme();
+loadEntries();
+renderAll();
+</script>
+</body>
+</html>
